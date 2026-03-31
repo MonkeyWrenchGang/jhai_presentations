@@ -232,7 +232,7 @@ function addTeamSlide() {
 
   // ── Net New Headcount callout (top-right, beside Mike Ames) ─
   const NB_X = L1_X + L1_W + 0.22, NB_Y = L1_Y;
-  const NB_W = 9.82 - NB_X, NB_H = 0.84;
+  const NB_W = 9.82 - NB_X, NB_H = 0.98;
   const THIRD = NB_W / 3;
   // Card shell
   slide.addShape(pres.shapes.RECTANGLE, { x: NB_X, y: NB_Y, w: NB_W, h: NB_H, fill: { color: JH.white }, line: { color: JH.ltGray, width: 0.75 } });
@@ -248,7 +248,7 @@ function addTeamSlide() {
     { label: "Management",   count: "2", color: JH.teal   },
     { label: "Data Science", count: "5", color: JH.green  },
   ];
-  const STAT_H = NB_H - 0.20 - 0.24;  // space between header and total band
+  const STAT_H = NB_H - 0.20 - 0.38;  // space between header and two-row FY split band
   NB_STATS.forEach(({ label, count, color }, si) => {
     const sx = NB_X + si * THIRD;
     if (si > 0) vLine(slide, sx, NB_Y + 0.20, NB_Y + NB_H - 0.24, JH.ltGray, 0.5);
@@ -261,11 +261,19 @@ function addTeamSlide() {
       fontSize: 7, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
     });
   });
-  // Total band
-  slide.addShape(pres.shapes.RECTANGLE, { x: NB_X, y: NB_Y + NB_H - 0.24, w: NB_W, h: 0.24, fill: { color: JH.ltGray, transparency: 20 }, line: { color: JH.ltGray, width: 0 } });
-  slide.addText("14 Open Positions", {
-    x: NB_X, y: NB_Y + NB_H - 0.24, w: NB_W, h: 0.24,
-    fontSize: 8.5, bold: true, color: JH.navy, fontFace: "Calibri", align: "center", valign: "middle", margin: 0,
+  // FY26 sub-band (1 position — MLOps Engineer)
+  const FY26_Y = NB_Y + NB_H - 0.38;
+  slide.addShape(pres.shapes.RECTANGLE, { x: NB_X, y: FY26_Y, w: NB_W, h: 0.18, fill: { color: JH.teal, transparency: 75 }, line: { color: JH.ltGray, width: 0.5 } });
+  slide.addText("FY26  ·  1 Position  (MLOps Engineer)", {
+    x: NB_X, y: FY26_Y, w: NB_W, h: 0.18,
+    fontSize: 7, bold: false, color: JH.teal, fontFace: "Calibri", align: "center", valign: "middle", margin: 0,
+  });
+  // FY27 sub-band (13 positions)
+  const FY27_Y = NB_Y + NB_H - 0.20;
+  slide.addShape(pres.shapes.RECTANGLE, { x: NB_X, y: FY27_Y, w: NB_W, h: 0.20, fill: { color: JH.navy }, line: { color: JH.navy, width: 0 } });
+  slide.addText("FY27  ·  13 Positions", {
+    x: NB_X, y: FY27_Y, w: NB_W, h: 0.20,
+    fontSize: 8.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle", margin: 0,
   });
 
   // ── Connectors L1 → L2 ─────────────────────────────────────
@@ -316,7 +324,7 @@ function addTeamSlide() {
     // Under Data Science TBD — open roles
     [
       { name: "Data Scientist",   title: "4 Open Positions",   open: true },
-      { name: "MLOps Engineer",   title: "1 Open Position",    open: true },
+      { name: "MLOps Engineer",   title: "1 Open Position",    open: true, fy: "FY26" },
     ],
   ];
 
@@ -346,9 +354,9 @@ function addTeamSlide() {
           x: cardX + cardW - 0.44, y: ry + 0.06, w: 0.38, h: 0.20,
           fontSize: 7.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle", margin: 0,
         });
-        slide.addText("Open Position" + (rep.title.startsWith("1") ? "" : "s"), {
+        slide.addText("Open Position" + (rep.title.startsWith("1") ? "" : "s") + (rep.fy ? ` · ${rep.fy}` : ""), {
           x: cardX + 0.1, y: ry + 0.26, w: cardW - 0.16, h: 0.18,
-          fontSize: 7, color: JH.dkGray, fontFace: "Calibri", italic: true, valign: "middle",
+          fontSize: 7, color: rep.fy ? JH.teal : JH.dkGray, fontFace: "Calibri", italic: true, valign: "middle",
         });
       } else if (rep.tbd) {
         // TBD lead — muted style
