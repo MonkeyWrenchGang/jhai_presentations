@@ -306,25 +306,25 @@ function addTeamSlide() {
 
   // ── Level 3: Direct reports ─────────────────────────────────
   const L3_Y0   = L2_BOT + 0.14;
-  const L3_H    = 0.50;
+  const L3_H    = 0.62;
   const L3_GAP  = 0.06;
   const L3_DATA = [
     // Under Goolsby — open positions by function
     [
-      { name: "Data Acq. & Engineering", title: "3 Open Positions", open: true },
-      { name: "Visualization",           title: "2 Open Positions", open: true },
-      { name: "App Dev",                 title: "2 Open Positions", open: true },
+      { name: "Data Acq. & Engineering", title: "3 Open Positions", open: true, pillars: [0] },
+      { name: "Visualization",           title: "2 Open Positions", open: true, pillars: [1] },
+      { name: "App Dev",                 title: "2 Open Positions", open: true, pillars: [2] },
     ],
     // Under Product TBD — 3 named PMs
     [
-      { name: "Elspeth Bloodgood", title: "PM, Go-to-Market & Visualization",  tbd: false },
-      { name: "Ashley Greenhaw",   title: "PM, Application Development",        tbd: false },
-      { name: "Mike Saunders",     title: "PM, Data Acq. & Engineering",        tbd: false },
+      { name: "Elspeth Bloodgood", title: "PM, Go-to-Market & Visualization",  tbd: false, pillars: [1] },
+      { name: "Ashley Greenhaw",   title: "PM, Application Development",        tbd: false, pillars: [2] },
+      { name: "Mike Saunders",     title: "PM, Data Acq. & Engineering",        tbd: false, pillars: [0] },
     ],
     // Under Data Science TBD — open roles
     [
-      { name: "Data Scientist",   title: "4 Open Positions",   open: true },
-      { name: "MLOps Engineer",   title: "1 Open Position",    open: true, fy: "FY26" },
+      { name: "Data Scientist",   title: "4 Open Positions",   open: true, pillars: [3] },
+      { name: "MLOps Engineer",   title: "1 Open Position",    open: true, fy: "FY26", pillars: [3] },
     ],
   ];
 
@@ -383,6 +383,38 @@ function addTeamSlide() {
           fontSize: 7.5, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
         });
       }
+
+      // ── Pillar tag pills (shared across all card types) ────────
+      if (rep.pillars && rep.pillars.length > 0) {
+        const TAG_Y = ry + L3_H - 0.14;
+        let tx = cardX + 0.1;
+        rep.pillars.forEach(pi => {
+          const pp = PILLARS[pi];
+          const tw = pp.short.length * 0.048 + 0.16;
+          slide.addShape(pres.shapes.RECTANGLE, { x: tx, y: TAG_Y, w: tw, h: 0.11, fill: { color: pp.color, transparency: 70 }, line: { color: pp.color, width: 0.5 } });
+          slide.addText(pp.short, { x: tx, y: TAG_Y, w: tw, h: 0.11, fontSize: 5.5, bold: true, color: pp.color, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+          tx += tw + 0.07;
+        });
+      }
+    });
+  });
+
+  // ── Pillar Ownership Row ─────────────────────────────────────
+  const PR_Y   = 4.52;
+  const PR_H   = 0.36;
+  const PR_GAP = 0.12;
+  const PR_W   = (10 - 0.4 * 2 - PR_GAP * 3) / 4;
+  slide.addText("PILLAR OWNERSHIP", {
+    x: 0.4, y: PR_Y - 0.18, w: 3, h: 0.16,
+    fontSize: 6, bold: true, color: JH.mdGray, fontFace: "Calibri", valign: "middle", characterSpacing: 1,
+  });
+  PILLARS.forEach((p, pi) => {
+    const px = 0.4 + pi * (PR_W + PR_GAP);
+    slide.addShape(pres.shapes.RECTANGLE, { x: px, y: PR_Y, w: PR_W, h: PR_H, fill: { color: p.color, transparency: 18 }, line: { color: p.color, width: 0 } });
+    slide.addShape(pres.shapes.RECTANGLE, { x: px, y: PR_Y, w: PR_W, h: 0.05, fill: { color: JH.white, transparency: 50 }, line: { color: JH.white, transparency: 50 } });
+    slide.addText(p.name, {
+      x: px, y: PR_Y, w: PR_W, h: PR_H,
+      fontSize: 8.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle",
     });
   });
 
