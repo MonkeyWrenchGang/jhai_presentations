@@ -311,7 +311,7 @@ async function buildDeck() {
     });
 
     const apps = [
-      { name: "Attrition /\nChurn Mediation",       desc: "ML scoring to identify at-risk FI customers weekly and power proactive retention workflows before churn occurs.", color: A1, icon: FaUserMinus },
+      { name: "Churn\nSentinel",       desc: "ML scoring to identify at-risk FI customers weekly and power proactive retention workflows before churn occurs.", color: A1, icon: FaUserMinus },
       { name: "Zelle Memo\nIntelligence",             desc: "NLP pipeline to classify Zelle memos for fraud patterns, elder abuse, and compliance flags — automatically.", color: A2, icon: FaMobileAlt },
       { name: "Anomaly\nDetection",                  desc: "Real-time ML detection of unusual account behavior and transaction patterns across JH-powered institutions.", color: A3, icon: FaExclamationTriangle },
       { name: "FI Decision\nStudio",                 desc: "No-code AutoML for FIs: upload data, train custom models, explain with SHAP, author rules, deploy as API, monitor drift.", color: A6, icon: FaSlidersH },
@@ -354,27 +354,27 @@ async function buildDeck() {
   // ==========================================================
   const appDetails = [
     {
-      name: "Attrition / Churn Mediation",
+      name: "Churn Sentinel",
       icon: FaUserMinus,
       color: A1,
-      problem: "Community banks and credit unions lose 8–12% of their customer/member base annually to attrition. Without predictive capability embedded in their platform, FI staff can only react after the account is already closing — when outreach success rates drop below 20%.",
+      problem: "Community banks and credit unions lose 8–12% of their customer base annually — but the signal is hiding in plain sight. Direct deposit cadence changes, ACH originator shifts, and balance migration patterns in payments data telegraph defection weeks before an account closes. By the time staff react, the relationship is already gone.",
       painPoints: [
-        "No early warning system for at-risk customers/members",
-        "Relationship managers lack behavioral risk scoring",
-        "Reactive outreach is expensive with low conversion",
-        "High cost-to-retain vs. cost-to-acquire imbalance",
+        "Direct deposit moves are the #1 churn signal — caught only after the fact",
+        "ACH cadence breaks (frequency, amount, originator) go unmonitored",
+        "Relationship managers have no behavioral risk score to prioritize outreach",
+        "Reactive retention is expensive — proactive saves cost a fraction",
       ],
-      solution: "A survival analysis + gradient boosted model (AutoGluon / CatBoost) embedded in the JH platform — scoring every customer and member weekly on churn probability using behavioral signals from transaction, login, product, and call data.",
+      solution: "Churn Sentinel is a two-phase signal model built on JH's network data — Phase 1 launches on ACH payments signals (direct deposit monitoring, cadence anomalies, originator changes) and Phase 2 enriches with core banking and Banno digital signals as those pipelines come online. The model trains on JH's full FI network regardless of per-FI adoption.",
       approach: [
-        "AutoGluon ensemble + CatBoost scoring pipeline",
-        "SHAP values for banker-facing explainability",
-        "Automated trigger → JH CRM / outreach workflows",
-        "Weekly model refresh with drift monitoring alerts",
+        "Phase 1 — ACH Sentinel: direct deposit cadence + originator change detection",
+        "Phase 2 — Core + Digital: balance trends, product thinning, Banno session signals",
+        "CatBoost survival model · SHAP explainability for banker-facing scores",
+        "Weekly scores pushed to JH CRM → automated outreach workflow triggers",
       ],
       metrics: [
         { val: "$1–3M", label: "Annual revenue protected\nper FI ($1B deposits)" },
         { val: "15–25%", label: "Reduction in churn\nrate for FI clients" },
-        { val: "Q1 FY27", label: "Target JH platform\ndelivery" },
+        { val: "Q3 FY26", label: "Phase 1 ACH Sentinel\ntarget launch" },
       ],
     },
     {
@@ -721,7 +721,7 @@ async function buildDeck() {
 
     const roiRows = [
       {
-        app: "Attrition / Churn Mediation",
+        app: "Churn Sentinel",
         savings: "$1–3M / year",
         how: "15–25% churn reduction × avg. customer revenue of $400–$600/yr",
         color: A1
@@ -964,7 +964,7 @@ async function buildDeck() {
     const appRows = [
       {
         icon: FaChartLine,
-        name: "Attrition / Churn Mediation",
+        name: "Churn Sentinel",
         tagline: "ML churn scores + proactive retention triggers per member",
         driver: "15–25% reduction in member attrition · avg. $400–$600 LTV saved per retained account",
         price: "$800 – $2,500",
@@ -1098,7 +1098,7 @@ async function buildDeck() {
         phase: "NEXT",
         module: "+ Core Banking Intelligence",
         sources: "jhaEnterprise  ·  Symitar  ·  Core Transactions",
-        apps: "Churn Mediation  ·  Cross-Sell Propensity",
+        apps: "Churn Sentinel  ·  Cross-Sell Propensity",
         arr500: "+$6M", arr2k: "+$12M", arr8k: "+$20M",
         color: COBALT_D,
         desc: "JH's proprietary core data creates a durable competitive moat — no competitor can replicate this.",
@@ -1478,7 +1478,7 @@ async function buildDeck() {
       { name: "iPay Bill Pay",                 detail: "Consumer + Business bill pay",    startQ: 0, endQ: 1, color: COBALT,   apps: "Cross-Sell Propensity" },
       { name: "JHA SmartPay / Biz Payments",   detail: "B2B ACH, vendor, remittance",     startQ: 0, endQ: 1, color: COBALT,   apps: "Overdraft Prediction" },
       { name: "Payrailz (P2P / A2A)",         detail: "Pay a Person, Transfer Money",    startQ: 0, endQ: 1, color: COBALT,   apps: "Fraud Ring Detection" },
-      { name: "Core Banking (jhaEnterprise / Symitar)", detail: "Core txns, deposits, loans", startQ: 2, endQ: 3, color: COBALT_D, apps: "Churn Mediation · Acct Opening LTV · CommercialSignal · Wealth Deflection" },
+      { name: "Core Banking (jhaEnterprise / Symitar)", detail: "Core txns, deposits, loans", startQ: 2, endQ: 3, color: COBALT_D, apps: "Churn Sentinel · Acct Opening LTV · CommercialSignal · Wealth Deflection" },
       { name: "Banno Digital + Lending",       detail: "Session behavior, loan data",     startQ: 4, endQ: 6, color: DK_GRAY,  apps: "Sentiment · Next Best Action · FI Decision Studio" },
     ];
 
@@ -1569,7 +1569,8 @@ async function buildDeck() {
     // startQ/endQ = 0-indexed quarters (0 = Q3 FY26 … 7 = Q2 FY28)
     // Bar spans active build → validate → launch window
     const appGanttRows = [
-      { name: "Churn Mediation",          detail: "Phase 1 MVP",              startQ: 0, endQ: 1, color: A1,  label: "MVP  ·  Phase 1" },
+      { name: "Churn Sentinel",          detail: "ACH signals  ·  Phase 1",  startQ: 0, endQ: 1, color: A1,  label: "ACH Sentinel  ·  Phase 1 launch" },
+      { name: "Churn Sentinel +",        detail: "Core + digital enrichment", startQ: 2, endQ: 3, color: A1,  label: "Core & Banno signals  →  Phase 2" },
       { name: "Zelle Memo Intelligence",  detail: "NLP compliance pipeline",  startQ: 2, endQ: 3, color: A2,  label: "Build  →  Phase 2 launch" },
       { name: "CommercialSignal",   detail: "SMB conversion model",     startQ: 2, endQ: 3, color: A7,  label: "Build  →  Phase 2 launch" },
       { name: "Gen. Wealth Deflection",   detail: "Household coverage model", startQ: 2, endQ: 4, color: A8,  label: "Phase 2 build  →  Phase 3" },
@@ -1644,24 +1645,25 @@ async function buildDeck() {
         items: [
           "Hire core team: Data Engineers + ML Engineers",
           "Stand up cloud data platform and ML infrastructure",
-          "Build FI data pipelines from JH core banking systems",
-          "Establish data governance and model review process",
+          "Ingest ACH payment rails — direct deposit monitoring live",
+          "Churn Sentinel Phase 1: ACH cadence + originator change alerts",
         ],
         apps: [
-          { label: "Attrition / Churn Mediation", color: A1, badge: "MVP" },
+          { label: "Churn Sentinel", color: A1, badge: "ACH" },
         ],
       },
       {
         num: "02", title: "Core Applications", period: "Q1–Q2 FY27  (Jul–Dec 2026)", color: COBALT_D,
         items: [
-          "Core banking + payments data integration complete",
-          "Exec dashboards + FI banker score explorer live",
+          "Churn Sentinel Phase 2: core banking + Banno digital signals",
           "CommercialSignal: personal-to-business conversion model",
           "Generational Wealth household relationship engine",
+          "Exec dashboards + FI banker score explorer live",
         ],
         apps: [
+          { label: "Churn Sentinel +",               color: A1, badge: "Core+Digital" },
           { label: "Zelle Memo Intelligence",        color: A2 },
-          { label: "CommercialSignal",         color: A7 },
+          { label: "CommercialSignal",               color: A7 },
           { label: "Generational Wealth Deflection", color: A8 },
         ],
       },
@@ -1778,7 +1780,7 @@ async function buildDeck() {
       { num: "1", text: "JHBI approves headcount budget and infrastructure allocation for Phase 1" },
       { num: "2", text: "DS team begins recruiting: Data Engineers + ML Engineers (Month 1)" },
       { num: "3", text: "Cloud platform procurement and ML environment setup (Months 1–2)" },
-      { num: "4", text: "Churn Mediation MVP scoping session + FI data access agreements (Month 2)" },
+      { num: "4", text: "Churn Sentinel Phase 1 scoping: ACH pipeline access + direct deposit monitoring spec (Month 2)" },
       { num: "5", text: "Bi-weekly DS steering committee established for roadmap governance" },
     ];
 
