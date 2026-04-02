@@ -38,7 +38,7 @@ const A3 = COBALT_D;  // Deep Cobalt
 const A4 = DK_GRAY;   // Dark Cool Gray
 const A5 = COBALT_M;  // Medium Cobalt
 const A6 = NAVY_MED;  // Decision Studio — Lighter Navy
-const A7 = "0A52C4";  // Rich Blue — Personal-as-Commercial
+const A7 = "0A52C4";  // Rich Blue — CommercialSignal
 const A8 = "0F3D8A";  // Deep Navy-Blue — Generational Wealth Deflection
 
 const FONT_H = "Calibri";
@@ -315,7 +315,7 @@ async function buildDeck() {
       { name: "Zelle Memo\nIntelligence",             desc: "NLP pipeline to classify Zelle memos for fraud patterns, elder abuse, and compliance flags — automatically.", color: A2, icon: FaMobileAlt },
       { name: "Anomaly\nDetection",                  desc: "Real-time ML detection of unusual account behavior and transaction patterns across JH-powered institutions.", color: A3, icon: FaExclamationTriangle },
       { name: "FI Decision\nStudio",                 desc: "No-code AutoML for FIs: upload data, train custom models, explain with SHAP, author rules, deploy as API, monitor drift.", color: A6, icon: FaSlidersH },
-      { name: "Personal-as-\nCommercial Detection",  desc: "ML classifier surfacing personal accounts with commercial transaction signatures — converting hidden SMB relationships to business banking.", color: A7, icon: FaBriefcase },
+      { name: "CommercialSignal",  desc: "ML classifier surfacing personal accounts with commercial transaction signatures — converting hidden SMB relationships to business banking.", color: A7, icon: FaBriefcase },
       { name: "Generational\nWealth Deflection",     desc: "Household coverage scoring to identify single-holder wealth concentration and expand FI relationships to next-generation family members.", color: A8, icon: FaUserFriends },
     ];
 
@@ -474,7 +474,7 @@ async function buildDeck() {
       ],
     },
     {
-      name: "Personal-as-Commercial Detection",
+      name: "CommercialSignal",
       icon: FaBriefcase,
       color: A7,
       problem: "Business owners run commercial operations through personal accounts daily — creating BSA/AML blind spots, Reg E gaps, and hiding SMB relationships that belong in business banking generating fee income, treasury products, and SBA loan revenue.",
@@ -751,7 +751,7 @@ async function buildDeck() {
         color: A5
       },
       {
-        app: "Personal-as-Commercial Detection",
+        app: "CommercialSignal",
         savings: "$400K–$1.2M / year",
         how: "SMB conversion revenue from business checking, treasury, and SBA loans on identified commercial-use accounts",
         color: A7
@@ -1017,7 +1017,7 @@ async function buildDeck() {
       },
       {
         icon: FaBriefcase,
-        name: "Personal-as-Commercial Detection",
+        name: "CommercialSignal",
         tagline: "ML scoring of personal accounts exhibiting commercial transaction signatures",
         driver: "Converts hidden SMB accounts to business banking — fee income, treasury products, SBA loans",
         price: "$400 – $1,200",
@@ -1478,7 +1478,7 @@ async function buildDeck() {
       { name: "iPay Bill Pay",                 detail: "Consumer + Business bill pay",    startQ: 0, endQ: 1, color: COBALT,   apps: "Cross-Sell Propensity" },
       { name: "JHA SmartPay / Biz Payments",   detail: "B2B ACH, vendor, remittance",     startQ: 0, endQ: 1, color: COBALT,   apps: "Overdraft Prediction" },
       { name: "Payrailz (P2P / A2A)",         detail: "Pay a Person, Transfer Money",    startQ: 0, endQ: 1, color: COBALT,   apps: "Fraud Ring Detection" },
-      { name: "Core Banking (jhaEnterprise / Symitar)", detail: "Core txns, deposits, loans", startQ: 2, endQ: 3, color: COBALT_D, apps: "Churn Mediation · Acct Opening LTV · Personal-as-Commercial · Wealth Deflection" },
+      { name: "Core Banking (jhaEnterprise / Symitar)", detail: "Core txns, deposits, loans", startQ: 2, endQ: 3, color: COBALT_D, apps: "Churn Mediation · Acct Opening LTV · CommercialSignal · Wealth Deflection" },
       { name: "Banno Digital + Lending",       detail: "Session behavior, loan data",     startQ: 4, endQ: 6, color: DK_GRAY,  apps: "Sentiment · Next Best Action · FI Decision Studio" },
     ];
 
@@ -1571,7 +1571,7 @@ async function buildDeck() {
     const appGanttRows = [
       { name: "Churn Mediation",          detail: "Phase 1 MVP",              startQ: 0, endQ: 1, color: A1,  label: "MVP  ·  Phase 1" },
       { name: "Zelle Memo Intelligence",  detail: "NLP compliance pipeline",  startQ: 2, endQ: 3, color: A2,  label: "Build  →  Phase 2 launch" },
-      { name: "Personal-as-Commercial",   detail: "SMB conversion model",     startQ: 2, endQ: 3, color: A7,  label: "Build  →  Phase 2 launch" },
+      { name: "CommercialSignal",   detail: "SMB conversion model",     startQ: 2, endQ: 3, color: A7,  label: "Build  →  Phase 2 launch" },
       { name: "Gen. Wealth Deflection",   detail: "Household coverage model", startQ: 2, endQ: 4, color: A8,  label: "Phase 2 build  →  Phase 3" },
       { name: "Anomaly Detection",        detail: "Real-time fraud engine",   startQ: 4, endQ: 6, color: A3,  label: "Build  →  Phase 3 launch" },
       { name: "FI Decision Studio",       detail: "AutoML platform  ·  GA",   startQ: 4, endQ: 7, color: A6,  label: "Platform build  →  Phase 3 GA" },
@@ -1656,12 +1656,12 @@ async function buildDeck() {
         items: [
           "Core banking + payments data integration complete",
           "Exec dashboards + FI banker score explorer live",
-          "Personal-as-Commercial SMB conversion model",
+          "CommercialSignal: personal-to-business conversion model",
           "Generational Wealth household relationship engine",
         ],
         apps: [
           { label: "Zelle Memo Intelligence",        color: A2 },
-          { label: "Personal-as-Commercial",         color: A7 },
+          { label: "CommercialSignal",         color: A7 },
           { label: "Generational Wealth Deflection", color: A8 },
         ],
       },
