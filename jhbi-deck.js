@@ -404,122 +404,121 @@ function addTeamSlide() {
   });
 
   // ── Level 3: Direct reports ─────────────────────────────────
-  const L3_Y0   = L2_BOT + 0.14;
-  const L3_H    = 0.76;
-  const L3_GAP  = 0.06;
+  // Per-card heights: stat cards taller, named/open cards compact
+  const L3_Y0      = L2_BOT + 0.14;
+  const L3_H_STAT  = 0.68;   // staffing breakdown cards (Existing FTEs | Contractors | New FTEs Req.)
+  const L3_H_NAMED = 0.48;   // named person cards
+  const L3_H_OPEN  = 0.50;   // open position cards
+  const L3_GAP     = 0.06;
   const L3_DATA = [
     // Under Goolsby — staffing breakdown per function
     [
       { name: "Data Acq. & Engineering", pillars: [0], stats: [
-        { label: "Existing FTEs", count: "—", color: JH.navy   },
-        { label: "Contractors",   count: "—", color: JH.teal   },
-        { label: "New FTEs Req.", count: "—", color: JH.green  },
+        { label: "Existing FTEs", count: "—", color: JH.navy  },
+        { label: "Contractors",   count: "—", color: JH.teal  },
+        { label: "New FTEs Req.", count: "—", color: JH.green },
       ]},
       { name: "Visualization", pillars: [1], stats: [
-        { label: "Existing FTEs", count: "—", color: JH.navy   },
-        { label: "Contractors",   count: "—", color: JH.teal   },
-        { label: "New FTEs Req.", count: "—", color: JH.green  },
+        { label: "Existing FTEs", count: "—", color: JH.navy  },
+        { label: "Contractors",   count: "—", color: JH.teal  },
+        { label: "New FTEs Req.", count: "—", color: JH.green },
       ]},
       { name: "App Dev", pillars: [2], stats: [
-        { label: "Existing FTEs", count: "—", color: JH.navy   },
-        { label: "Contractors",   count: "—", color: JH.teal   },
-        { label: "New FTEs Req.", count: "—", color: JH.green  },
+        { label: "Existing FTEs", count: "—", color: JH.navy  },
+        { label: "Contractors",   count: "—", color: JH.teal  },
+        { label: "New FTEs Req.", count: "—", color: JH.green },
       ]},
     ],
-    // Under Product TBD — 3 named PMs
+    // Under Product TBD — 3 named PMs + 1 new staffing stats card
     [
-      { name: "Elspeth Bloodgood", title: "PM, Go-to-Market & Visualization",  tbd: false, pillars: [1] },
-      { name: "Ashley Greenhaw",   title: "PM, Application Development",        tbd: false, pillars: [2] },
-      { name: "Mike Saunders",     title: "PM, Data Acq. & Engineering",        tbd: false, pillars: [0] },
+      { name: "Elspeth Bloodgood", title: "PM, Go-to-Market & Visualization", pillars: [1] },
+      { name: "Ashley Greenhaw",   title: "PM, Application Development",       pillars: [2] },
+      { name: "Mike Saunders",     title: "PM, Data Acq. & Engineering",       pillars: [0] },
+      { name: "[PM Function TBD]", pillars: [3], stats: [
+        { label: "Existing FTEs", count: "—", color: JH.navy  },
+        { label: "Contractors",   count: "—", color: JH.teal  },
+        { label: "New FTEs Req.", count: "—", color: JH.green },
+      ]},
     ],
-    // Under Data Science TBD — open roles
+    // Under Data Science TBD
     [
-      { name: "Data Scientist",   title: "4 Open Positions",   open: true, pillars: [3] },
-      { name: "MLOps Engineer",   title: "1 Open Position",    open: true, fy: "FY26", pillars: [3] },
+      { name: "Data Scientist", pillars: [3], stats: [
+        { label: "Existing FTEs", count: "—", color: JH.navy  },
+        { label: "Contractors",   count: "—", color: JH.teal  },
+        { label: "New FTEs Req.", count: "—", color: JH.green },
+      ]},
+      { name: "MLOps Engineer", title: "1 Open Position", open: true, fy: "FY26", pillars: [3] },
     ],
   ];
 
   L3_DATA.forEach((reports, ci) => {
-    const cc  = COL_COLORS[ci];
+    const cc     = COL_COLORS[ci];
     const col_cx = COL_CX[ci];
-
-    // Drop line from L2 to L3 start
     vLine(slide, col_cx, L2_BOT, L3_Y0, cc, 1.2);
 
-    reports.forEach((rep, ri) => {
-      const ry    = L3_Y0 + ri * (L3_H + L3_GAP);
+    let curY = L3_Y0;
+    reports.forEach((rep) => {
+      const ry    = curY;
+      const cardH = rep.stats ? L3_H_STAT : rep.open ? L3_H_OPEN : L3_H_NAMED;
       const cardX = COL_X[ci] + 0.06;
       const cardW = COL_W - 0.12;
 
       if (rep.stats) {
         // Staffing breakdown card — Existing FTEs | Contractors | New FTEs Req.
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.white }, line: { color: cc, width: 0.75 } });
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc }, line: { color: cc } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: cardH, fill: { color: JH.white }, line: { color: cc, width: 0.75 } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: cardH, fill: { color: cc }, line: { color: cc } });
         slide.addText(rep.name, {
-          x: cardX + 0.1, y: ry + 0.04, w: cardW - 0.16, h: 0.17,
-          fontSize: 8, bold: true, color: JH.navy, fontFace: "Calibri", valign: "middle",
+          x: cardX + 0.1, y: ry + 0.03, w: cardW - 0.16, h: 0.14,
+          fontSize: 7.5, bold: true, color: JH.navy, fontFace: "Calibri", valign: "middle",
         });
-        hLine(slide, cardX + 0.08, cardX + cardW - 0.08, ry + 0.23, JH.ltGray, 0.5);
+        hLine(slide, cardX + 0.08, cardX + cardW - 0.08, ry + 0.19, JH.ltGray, 0.5);
         const STAT_W = (cardW - 0.055) / 3;
         rep.stats.forEach(({ label, count, color: sc }, si) => {
           const sx = cardX + 0.055 + si * STAT_W;
-          if (si > 0) vLine(slide, sx, ry + 0.25, ry + 0.62, JH.ltGray, 0.5);
+          if (si > 0) vLine(slide, sx, ry + 0.21, ry + cardH - 0.12, JH.ltGray, 0.5);
           slide.addText(count, {
-            x: sx, y: ry + 0.25, w: STAT_W, h: 0.22,
-            fontSize: 15, bold: true, color: sc, fontFace: "Calibri", align: "center", valign: "middle",
+            x: sx, y: ry + 0.21, w: STAT_W, h: 0.20,
+            fontSize: 13, bold: true, color: sc, fontFace: "Calibri", align: "center", valign: "middle",
           });
           slide.addText(label, {
-            x: sx, y: ry + 0.48, w: STAT_W, h: 0.12,
+            x: sx, y: ry + 0.42, w: STAT_W, h: 0.10,
             fontSize: 5.5, color: JH.dkGray, fontFace: "Calibri", align: "center", valign: "middle",
           });
         });
       } else if (rep.open) {
         // Open position — outlined card with count badge
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.ltGray, transparency: 20 }, line: { color: cc, width: 0.75 } });
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc, transparency: 30 }, line: { color: cc, transparency: 30 } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: cardH, fill: { color: JH.ltGray, transparency: 20 }, line: { color: cc, width: 0.75 } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: cardH, fill: { color: cc, transparency: 30 }, line: { color: cc, transparency: 30 } });
         slide.addText(rep.name, {
-          x: cardX + 0.1, y: ry + 0.04, w: cardW - 0.52, h: 0.22,
+          x: cardX + 0.1, y: ry + 0.03, w: cardW - 0.52, h: 0.20,
           fontSize: 8.5, bold: true, color: JH.navy, fontFace: "Calibri", valign: "middle",
         });
-        // Count badge
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX + cardW - 0.44, y: ry + 0.06, w: 0.38, h: 0.20, fill: { color: cc }, line: { color: cc } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX + cardW - 0.44, y: ry + 0.05, w: 0.38, h: 0.20, fill: { color: cc }, line: { color: cc } });
         slide.addText(rep.title.split(" ")[0], {
-          x: cardX + cardW - 0.44, y: ry + 0.06, w: 0.38, h: 0.20,
+          x: cardX + cardW - 0.44, y: ry + 0.05, w: 0.38, h: 0.20,
           fontSize: 7.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle", margin: 0,
         });
         slide.addText("Open Position" + (rep.title.startsWith("1") ? "" : "s") + (rep.fy ? ` · ${rep.fy}` : ""), {
-          x: cardX + 0.1, y: ry + 0.26, w: cardW - 0.16, h: 0.18,
+          x: cardX + 0.1, y: ry + 0.27, w: cardW - 0.16, h: 0.13,
           fontSize: 7, color: rep.fy ? JH.teal : JH.dkGray, fontFace: "Calibri", italic: true, valign: "middle",
         });
-      } else if (rep.tbd) {
-        // TBD lead — muted style
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.white }, line: { color: JH.mdGray, width: 0.5 } });
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc, transparency: 20 }, line: { color: cc, transparency: 20 } });
-        slide.addText("[TBD]", {
-          x: cardX + 0.1, y: ry + 0.04, w: cardW - 0.16, h: 0.20,
-          fontSize: 8, bold: true, color: JH.mdGray, fontFace: "Calibri", italic: true, valign: "middle",
-        });
-        slide.addText(rep.title, {
-          x: cardX + 0.1, y: ry + 0.26, w: cardW - 0.16, h: 0.20,
-          fontSize: 8, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
-        });
       } else {
-        // Named hire — full style
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.white }, line: { color: JH.mdGray, width: 0.5 } });
-        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc }, line: { color: cc } });
+        // Named hire — compact style
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: cardH, fill: { color: JH.white }, line: { color: JH.mdGray, width: 0.5 } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: cardH, fill: { color: cc }, line: { color: cc } });
         slide.addText(rep.name, {
-          x: cardX + 0.1, y: ry + 0.04, w: cardW - 0.16, h: 0.22,
+          x: cardX + 0.1, y: ry + 0.03, w: cardW - 0.16, h: 0.18,
           fontSize: 8.5, bold: true, color: JH.navy, fontFace: "Calibri", valign: "middle",
         });
         slide.addText(rep.title, {
-          x: cardX + 0.1, y: ry + 0.26, w: cardW - 0.16, h: 0.20,
-          fontSize: 7.5, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
+          x: cardX + 0.1, y: ry + 0.23, w: cardW - 0.16, h: 0.14,
+          fontSize: 7, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
         });
       }
 
-      // ── Pillar tag pills (shared across all card types) ────────
+      // ── Pillar tag pills (shared) ───────────────────────────
       if (rep.pillars && rep.pillars.length > 0) {
-        const TAG_Y = ry + L3_H - 0.14;
+        const TAG_Y = ry + cardH - 0.13;
         let tx = cardX + 0.1;
         rep.pillars.forEach(pi => {
           const pp = PILLARS[pi];
@@ -529,25 +528,27 @@ function addTeamSlide() {
           tx += tw + 0.07;
         });
       }
+
+      curY += cardH + L3_GAP;
     });
   });
 
   // ── Pillar Ownership Row ─────────────────────────────────────
-  const PR_Y   = 4.52;
-  const PR_H   = 0.36;
+  const PR_Y   = 4.72;
+  const PR_H   = 0.24;
   const PR_GAP = 0.12;
   const PR_W   = (10 - 0.4 * 2 - PR_GAP * 3) / 4;
   slide.addText("PILLAR OWNERSHIP", {
-    x: 0.4, y: PR_Y - 0.18, w: 3, h: 0.16,
+    x: 0.4, y: PR_Y - 0.16, w: 3, h: 0.14,
     fontSize: 6, bold: true, color: JH.mdGray, fontFace: "Calibri", valign: "middle", characterSpacing: 1,
   });
   PILLARS.forEach((p, pi) => {
     const px = 0.4 + pi * (PR_W + PR_GAP);
     slide.addShape(pres.shapes.RECTANGLE, { x: px, y: PR_Y, w: PR_W, h: PR_H, fill: { color: p.color, transparency: 18 }, line: { color: p.color, width: 0 } });
-    slide.addShape(pres.shapes.RECTANGLE, { x: px, y: PR_Y, w: PR_W, h: 0.05, fill: { color: JH.white, transparency: 50 }, line: { color: JH.white, transparency: 50 } });
+    slide.addShape(pres.shapes.RECTANGLE, { x: px, y: PR_Y, w: PR_W, h: 0.04, fill: { color: JH.white, transparency: 50 }, line: { color: JH.white, transparency: 50 } });
     slide.addText(p.name, {
       x: px, y: PR_Y, w: PR_W, h: PR_H,
-      fontSize: 8.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle",
+      fontSize: 8, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle",
     });
   });
 
