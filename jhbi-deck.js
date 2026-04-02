@@ -17,11 +17,12 @@ const JH = {
 };
 
 // ─── Pillar definitions ─────────────────────────────────────────
+// name = section title  |  sub = capability label  |  short = pill badge
 const PILLARS = [
-  { name: "Data Acquisition",       short: "Data Acq.",    color: JH.navy,   text: JH.white  },
-  { name: "Reporting & Dashboards", short: "Reporting",    color: JH.cobalt, text: JH.white  },
-  { name: "Portal / Self Service",  short: "Portal",       color: JH.teal,   text: JH.white  },
-  { name: "Data Science Apps",      short: "Data Science", color: JH.green,  text: JH.white  },
+  { name: "The Foundation", sub: "Data Acquisition",   short: "Foundation", color: JH.navy,   text: JH.white },
+  { name: "The Lens",       sub: "Visualizations",     short: "The Lens",   color: JH.cobalt, text: JH.white },
+  { name: "The Interface",  sub: "App / API Dev",      short: "Interface",  color: JH.teal,   text: JH.white },
+  { name: "The Engine",     sub: "DS Buildout",        short: "The Engine", color: JH.green,  text: JH.white },
 ];
 
 // ─── Team ───────────────────────────────────────────────────────
@@ -126,13 +127,14 @@ function headerBar(slide, title, subtitle) {
 
 function footerBar(slide, note) {
   slide.addShape(pres.shapes.RECTANGLE, { x: 0, y: 5.42, w: 10, h: 0.205, fill: { color: JH.ltGray }, line: { color: JH.ltGray } });
-  slide.addText(note || "jack henry\u2122  \u00b7  JHBI Analytics  \u00b7  Confidential  \u00b7  FY27  \u00b7  Jul 2026 \u2013 Jun 2027", {
+  slide.addText(note || "jack henry\u2122  \u00b7  JHBI  \u00b7  Confidential  \u00b7  FY27  \u00b7  Jul 2026 \u2013 Jun 2027", {
     x: 0.4, y: 5.42, w: 9.2, h: 0.205, fontSize: 8, color: JH.dkGray, fontFace: "Calibri", valign: "middle",
   });
 }
 
 // ─── Build slides ────────────────────────────────────────────────
 addCoverSlide();
+addInvestmentPillarsSlide();
 addTeamSlide();
 addProgramOverviewSlide();
 addQuarterlyRoadmapSlide();
@@ -198,7 +200,103 @@ function addCoverSlide() {
 
 
 // ═══════════════════════════════════════════════════════════════
-//  SLIDE 2 — Team / Org Structure  (3-level hierarchy)
+//  SLIDE 2 — Four Investment Pillars
+// ═══════════════════════════════════════════════════════════════
+function addInvestmentPillarsSlide() {
+  const slide = pres.addSlide();
+  slide.background = { color: JH.ivory };
+  headerBar(slide, "Four Investment Pillars \u2014 What We Are Building", "JHBI \u00b7 FY27");
+  footerBar(slide);
+
+  // Bullet content per pillar (index matches PILLARS order)
+  const BULLETS = [
+    // 0 — The Foundation (Data Acquisition)
+    [
+      "FI behavioral data pipelines from JH core systems",
+      "Real-time streaming infrastructure (Kafka / event bus)",
+      "Data quality monitoring, lineage & governance framework",
+      "Enterprise data catalog and governance framework",
+      "Aggregated anonymized FI benchmarking data layer",
+    ],
+    // 1 — The Lens (Visualizations)
+    [
+      "Executive KPI dashboards embedded in JH platform",
+      "Model performance & drift monitoring dashboards",
+      "FI client-facing risk score explorer (banker fact)",
+      "Self-serve analytics surface for business stakeholders",
+    ],
+    // 2 — The Interface (App / API Dev)
+    [
+      "Lightweight internal AI apps embedded in JH ecosystem",
+      "REST APIs distributing model scores to JH products",
+      "Banno + JH Enterprise integration & alerting workflows",
+      "Meeting and workflow automation services layer",
+      "Role-based access control and full audit logging",
+    ],
+    // 3 — The Engine (DS Buildout)
+    [
+      "ML platform: feature store + experiment tracking",
+      "AutoGluon, CatBoost, XGBoost model serving at scale",
+      "SHAP explainability layer across all deployed models",
+      "Model governance, bias review, and model card process",
+    ],
+  ];
+
+  const COL_W  = 2.22;
+  const COL_GAP = 0.12;
+  const START_X = (10 - 4 * COL_W - 3 * COL_GAP) / 2;
+  const CARD_Y  = 0.62;
+  const CARD_H  = 5.42 - CARD_Y - 0.12;
+
+  PILLARS.forEach((p, pi) => {
+    const cx = START_X + pi * (COL_W + COL_GAP);
+
+    // Card shell
+    slide.addShape(pres.shapes.RECTANGLE, {
+      x: cx, y: CARD_Y, w: COL_W, h: CARD_H,
+      fill: { color: JH.white }, line: { color: p.color, width: 0.75 }, shadow: mkShadow(),
+    });
+    // Colored top accent strip
+    slide.addShape(pres.shapes.RECTANGLE, {
+      x: cx, y: CARD_Y, w: COL_W, h: 0.05,
+      fill: { color: p.color }, line: { color: p.color },
+    });
+    // Section sub-label ("THE FOUNDATION" etc.)
+    const SECTION = ["THE FOUNDATION", "THE LENS", "THE INTERFACE", "THE ENGINE"][pi];
+    slide.addText(SECTION, {
+      x: cx + 0.14, y: CARD_Y + 0.10, w: COL_W - 0.28, h: 0.18,
+      fontSize: 7, bold: true, color: p.color, fontFace: "Calibri",
+      align: "left", valign: "middle", characterSpacing: 1,
+    });
+    // Pillar name (e.g. "The Foundation")
+    slide.addText(p.name, {
+      x: cx + 0.14, y: CARD_Y + 0.28, w: COL_W - 0.28, h: 0.32,
+      fontSize: 11.5, bold: true, color: JH.navy, fontFace: "Calibri",
+      align: "left", valign: "middle",
+    });
+    // Sub-capability label (e.g. "Data Acquisition")
+    slide.addText(p.sub, {
+      x: cx + 0.14, y: CARD_Y + 0.58, w: COL_W - 0.28, h: 0.18,
+      fontSize: 8, color: JH.dkGray, fontFace: "Calibri", italic: true,
+      align: "left", valign: "middle",
+    });
+    // Divider
+    hLine(slide, cx + 0.14, cx + COL_W - 0.14, CARD_Y + 0.80, JH.ltGray, 0.5);
+    // Bullet list
+    const bulletItems = BULLETS[pi].map(txt => ({
+      text: txt,
+      options: { bullet: { type: "bullet", characterCode: "25CF", color: p.color, indent: 6 }, fontSize: 8, color: JH.dkGray, fontFace: "Calibri" },
+    }));
+    slide.addText(bulletItems, {
+      x: cx + 0.10, y: CARD_Y + 0.86, w: COL_W - 0.20, h: CARD_H - 0.90,
+      valign: "top", paraSpaceAfter: 4,
+    });
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  SLIDE 3 — Team / Org Structure  (3-level hierarchy)
 // ═══════════════════════════════════════════════════════════════
 function addTeamSlide() {
   const slide = pres.addSlide();
@@ -306,14 +404,26 @@ function addTeamSlide() {
 
   // ── Level 3: Direct reports ─────────────────────────────────
   const L3_Y0   = L2_BOT + 0.14;
-  const L3_H    = 0.62;
+  const L3_H    = 0.76;
   const L3_GAP  = 0.06;
   const L3_DATA = [
-    // Under Goolsby — open positions by function
+    // Under Goolsby — staffing breakdown per function
     [
-      { name: "Data Acq. & Engineering", title: "3 Open Positions", open: true, pillars: [0] },
-      { name: "Visualization",           title: "2 Open Positions", open: true, pillars: [1] },
-      { name: "App Dev",                 title: "2 Open Positions", open: true, pillars: [2] },
+      { name: "Data Acq. & Engineering", pillars: [0], stats: [
+        { label: "Existing FTEs", count: "—", color: JH.navy   },
+        { label: "Contractors",   count: "—", color: JH.teal   },
+        { label: "New FTEs Req.", count: "—", color: JH.green  },
+      ]},
+      { name: "Visualization", pillars: [1], stats: [
+        { label: "Existing FTEs", count: "—", color: JH.navy   },
+        { label: "Contractors",   count: "—", color: JH.teal   },
+        { label: "New FTEs Req.", count: "—", color: JH.green  },
+      ]},
+      { name: "App Dev", pillars: [2], stats: [
+        { label: "Existing FTEs", count: "—", color: JH.navy   },
+        { label: "Contractors",   count: "—", color: JH.teal   },
+        { label: "New FTEs Req.", count: "—", color: JH.green  },
+      ]},
     ],
     // Under Product TBD — 3 named PMs
     [
@@ -340,7 +450,29 @@ function addTeamSlide() {
       const cardX = COL_X[ci] + 0.06;
       const cardW = COL_W - 0.12;
 
-      if (rep.open) {
+      if (rep.stats) {
+        // Staffing breakdown card — Existing FTEs | Contractors | New FTEs Req.
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.white }, line: { color: cc, width: 0.75 } });
+        slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc }, line: { color: cc } });
+        slide.addText(rep.name, {
+          x: cardX + 0.1, y: ry + 0.04, w: cardW - 0.16, h: 0.17,
+          fontSize: 8, bold: true, color: JH.navy, fontFace: "Calibri", valign: "middle",
+        });
+        hLine(slide, cardX + 0.08, cardX + cardW - 0.08, ry + 0.23, JH.ltGray, 0.5);
+        const STAT_W = (cardW - 0.055) / 3;
+        rep.stats.forEach(({ label, count, color: sc }, si) => {
+          const sx = cardX + 0.055 + si * STAT_W;
+          if (si > 0) vLine(slide, sx, ry + 0.25, ry + 0.62, JH.ltGray, 0.5);
+          slide.addText(count, {
+            x: sx, y: ry + 0.25, w: STAT_W, h: 0.22,
+            fontSize: 15, bold: true, color: sc, fontFace: "Calibri", align: "center", valign: "middle",
+          });
+          slide.addText(label, {
+            x: sx, y: ry + 0.48, w: STAT_W, h: 0.12,
+            fontSize: 5.5, color: JH.dkGray, fontFace: "Calibri", align: "center", valign: "middle",
+          });
+        });
+      } else if (rep.open) {
         // Open position — outlined card with count badge
         slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: cardW, h: L3_H, fill: { color: JH.ltGray, transparency: 20 }, line: { color: cc, width: 0.75 } });
         slide.addShape(pres.shapes.RECTANGLE, { x: cardX, y: ry, w: 0.055, h: L3_H, fill: { color: cc, transparency: 30 }, line: { color: cc, transparency: 30 } });
