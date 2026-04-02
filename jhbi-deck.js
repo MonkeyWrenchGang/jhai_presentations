@@ -139,6 +139,7 @@ addTeamSlide();
 addProgramOverviewSlide();
 addQuarterlyRoadmapSlide();
 addGanttSlide();
+addContractorRampSlide();
 addFinancialImpactSlide();
 addNowNextLaterSlide();
 
@@ -870,7 +871,171 @@ function addGanttSlide() {
 
 
 // ═══════════════════════════════════════════════════════════════
-//  SLIDE 6 — Phase 1 Financial Impact & ARR Scaling
+//  SLIDE 7 — Contractor Ramp-Down / Staffing Transition Plan
+//  (Duplicate of Gantt view, showing 3-wave FTE conversion)
+// ═══════════════════════════════════════════════════════════════
+function addContractorRampSlide() {
+  const slide = pres.addSlide();
+  slide.background = { color: JH.ivory };
+  headerBar(slide, "JHBI \u2014 Staffing Transition Plan", "Contractor Ramp-Down \u00b7 3-Wave FTE Conversion");
+  footerBar(slide);
+
+  // ── Wave headcount — UPDATE THESE with actual numbers ────────
+  // Each entry: phase span on the 18-month axis, FTE count, contractor count
+  const HC = [
+    { label: "Foundation\nFY26 H2",  mi: 0,  span: 6, ftes: 2, ctrs: 5 },
+    { label: "Wave 1\nQ1 FY27",      mi: 6,  span: 3, ftes: 5, ctrs: 4 },
+    { label: "Wave 2\nQ2 FY27",      mi: 9,  span: 3, ftes: 8, ctrs: 2 },
+    { label: "Wave 3\nQ3+ FY27",     mi: 12, span: 6, ftes: 11, ctrs: 0 },
+  ];
+  const MAX_HC = 14;   // scale ceiling — set to max(ftes+ctrs)+buffer
+
+  // ── Same grid constants as Gantt slide ───────────────────────
+  const MONTHS   = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun"];
+  const LABEL_X  = 0.15, LABEL_W = 0.82;
+  const GRID_X   = LABEL_X + LABEL_W + 0.05;
+  const GRID_W   = 10 - GRID_X - 0.1;
+  const CELL_W   = GRID_W / 18;
+  const HEADER_Y = 0.62, HEADER_H = 0.37;
+
+  // Foundation zone shading
+  slide.addShape(pres.shapes.RECTANGLE, {
+    x: GRID_X, y: HEADER_Y + HEADER_H,
+    w: 6 * CELL_W, h: 4.82 - (HEADER_Y + HEADER_H),
+    fill: { color: "D8DBE0", transparency: 55 }, line: { color: "D8DBE0", width: 0 },
+  });
+
+  // Phase header bands
+  const PHASES = [
+    { mi: 0,  span: 6, label: "FY26 H2  \u00b7  Foundation", color: JH.dkGray },
+    { mi: 6,  span: 3, label: "Q1  FY27 \u00b7  Wave 1",     color: JH.navy   },
+    { mi: 9,  span: 3, label: "Q2  FY27 \u00b7  Wave 2",     color: JH.cobalt },
+    { mi: 12, span: 3, label: "Q3  FY27 \u00b7  Wave 3",     color: JH.teal   },
+    { mi: 15, span: 3, label: "Q4  FY27",                    color: JH.green  },
+  ];
+  const MCOLS = [
+    JH.dkGray,JH.dkGray,JH.dkGray,JH.dkGray,JH.dkGray,JH.dkGray,
+    JH.navy,JH.navy,JH.navy,JH.cobalt,JH.cobalt,JH.cobalt,
+    JH.teal,JH.teal,JH.teal,JH.green,JH.green,JH.green,
+  ];
+  PHASES.forEach(({ mi, span, label, color }) => {
+    const qx = GRID_X + mi * CELL_W, qw = CELL_W * span;
+    slide.addShape(pres.shapes.RECTANGLE, { x: qx, y: HEADER_Y, w: qw, h: HEADER_H * 0.5, fill: { color }, line: { color: JH.white, width: 0.5 } });
+    slide.addText(label, { x: qx + 0.02, y: HEADER_Y, w: qw - 0.04, h: HEADER_H * 0.5, fontSize: 7, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+  });
+  MONTHS.forEach((m, mi) => {
+    const mx = GRID_X + mi * CELL_W;
+    slide.addShape(pres.shapes.RECTANGLE, { x: mx, y: HEADER_Y + HEADER_H * 0.5, w: CELL_W, h: HEADER_H * 0.5, fill: { color: MCOLS[mi], transparency: 28 }, line: { color: JH.white, width: 0.4 } });
+    slide.addText(m, { x: mx, y: HEADER_Y + HEADER_H * 0.5, w: CELL_W, h: HEADER_H * 0.5, fontSize: 5.5, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle", margin: 0 });
+  });
+
+  // ── Chart area ───────────────────────────────────────────────
+  const CHART_Y0 = HEADER_Y + HEADER_H + 0.16;
+  const BASE_Y   = 4.82;
+  const CHART_H  = BASE_Y - CHART_Y0;
+
+  // Horizontal grid lines + Y axis tick labels
+  const Y_TICKS = [0, 2, 4, 6, 8, 10, 12, 14].filter(v => v <= MAX_HC);
+  Y_TICKS.forEach(h => {
+    const ly = BASE_Y - (h / MAX_HC) * CHART_H;
+    if (h > 0) hLine(slide, GRID_X, GRID_X + GRID_W, ly, JH.ltGray, 0.4);
+    hLine(slide, GRID_X - 0.06, GRID_X, ly, JH.mdGray, 0.5);
+    slide.addText(String(h), {
+      x: LABEL_X, y: ly - 0.10, w: LABEL_W - 0.10, h: 0.20,
+      fontSize: 6.5, color: JH.dkGray, fontFace: "Calibri", align: "right", valign: "middle",
+    });
+  });
+  // Y axis label
+  slide.addText("Headcount", {
+    x: 0, y: CHART_Y0 + CHART_H / 2 - 0.4, w: 0.20, h: 0.80,
+    fontSize: 6.5, color: JH.mdGray, fontFace: "Calibri", align: "center", rotate: 270,
+  });
+
+  // Monthly column lines
+  for (let mi = 0; mi <= 18; mi++) {
+    const lx = GRID_X + mi * CELL_W;
+    const heavy = [0,6,9,12,15,18].includes(mi);
+    vLine(slide, lx, CHART_Y0, BASE_Y, heavy ? JH.dkGray : JH.ltGray, heavy ? 0.8 : 0.3);
+  }
+
+  // Chart baseline
+  hLine(slide, GRID_X, GRID_X + GRID_W, BASE_Y, JH.dkGray, 1.0);
+
+  // ── Stacked wave bars (one wide bar per wave period) ─────────
+  HC.forEach(({ label, mi, span, ftes, ctrs }, wi) => {
+    const bx  = GRID_X + mi * CELL_W + 0.04;
+    const bw  = span * CELL_W - 0.08;
+    const fteH = (ftes / MAX_HC) * CHART_H;
+    const ctrH = (ctrs / MAX_HC) * CHART_H;
+
+    // FTE bar (bottom, cobalt)
+    if (fteH > 0.01) {
+      slide.addShape(pres.shapes.RECTANGLE, {
+        x: bx, y: BASE_Y - fteH, w: bw, h: fteH,
+        fill: { color: JH.cobalt, transparency: 22 }, line: { color: JH.cobalt, width: 0.8 },
+      });
+      if (fteH > 0.28) {
+        slide.addText(`${ftes} FTEs`, {
+          x: bx, y: BASE_Y - fteH + 0.04, w: bw, h: 0.26,
+          fontSize: 9.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle",
+        });
+      }
+    }
+
+    // Contractor bar (on top, teal)
+    if (ctrH > 0.01) {
+      slide.addShape(pres.shapes.RECTANGLE, {
+        x: bx, y: BASE_Y - fteH - ctrH, w: bw, h: ctrH,
+        fill: { color: JH.teal, transparency: 28 }, line: { color: JH.teal, width: 0.8 },
+      });
+      if (ctrH > 0.28) {
+        slide.addText(`${ctrs} Contractors`, {
+          x: bx, y: BASE_Y - fteH - ctrH + 0.04, w: bw, h: 0.26,
+          fontSize: 9.5, bold: true, color: JH.white, fontFace: "Calibri", align: "center", valign: "middle",
+        });
+      }
+    }
+
+    // Total headcount label above bar
+    const totalH = fteH + ctrH;
+    slide.addText(`Total: ${ftes + ctrs}`, {
+      x: bx, y: BASE_Y - totalH - 0.22, w: bw, h: 0.20,
+      fontSize: 8, bold: false, color: JH.dkGray, fontFace: "Calibri", align: "center",
+    });
+
+    // Wave label below baseline
+    slide.addText(label, {
+      x: bx, y: BASE_Y + 0.06, w: bw, h: 0.30,
+      fontSize: 7.5, bold: true, color: wi === 0 ? JH.dkGray : JH.navy, fontFace: "Calibri", align: "center", valign: "middle",
+    });
+  });
+
+  // Wave transition markers at months 6, 9, 12
+  [{ mi: 6, label: "▶ Wave 1" }, { mi: 9, label: "▶ Wave 2" }, { mi: 12, label: "▶ Wave 3" }].forEach(({ mi, label }) => {
+    const lx = GRID_X + mi * CELL_W;
+    vLine(slide, lx, CHART_Y0, BASE_Y, "C04040", 1.6);
+    slide.addText(label, {
+      x: lx + 0.04, y: CHART_Y0 + 0.04, w: 0.80, h: 0.20,
+      fontSize: 7, bold: true, color: "C04040", fontFace: "Calibri", valign: "middle",
+    });
+  });
+
+  // Legend
+  const LEG_Y = 5.06;
+  [[JH.cobalt, "FTEs (Full-Time)"], [JH.teal, "Contractors"]].forEach(([color, label], li) => {
+    const lx = 3.8 + li * 2.6;
+    slide.addShape(pres.shapes.RECTANGLE, { x: lx, y: LEG_Y + 0.04, w: 0.20, h: 0.14, fill: { color }, line: { color } });
+    slide.addText(label, { x: lx + 0.28, y: LEG_Y, w: 2.2, h: 0.22, fontSize: 7.5, color: JH.dkGray, fontFace: "Calibri", valign: "middle" });
+  });
+  slide.addText("* Headcount figures are illustrative — update with actuals", {
+    x: 0.15, y: LEG_Y + 0.02, w: 3.5, h: 0.18,
+    fontSize: 6.5, color: JH.mdGray, fontFace: "Calibri", italic: true, valign: "middle",
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+//  SLIDE 8 — Phase 1 Financial Impact & ARR Scaling
 // ═══════════════════════════════════════════════════════════════
 function addFinancialImpactSlide() {
   const slide = pres.addSlide();
