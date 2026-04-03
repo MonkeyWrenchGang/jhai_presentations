@@ -110,7 +110,7 @@ for label, val, fmt, is_input, note in params:
     ws_a.cell(r,1).alignment = lft()
 
     if val is None:
-        ws_a.cell(r,2).value  = "=1-B5"
+        ws_a.cell(r,2).value  = "=1-B6"
         ws_a.cell(r,2).font   = fnt(color=FX_BLACK)
     else:
         ws_a.cell(r,2).value  = val

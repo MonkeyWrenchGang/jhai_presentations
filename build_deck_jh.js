@@ -215,8 +215,8 @@ async function buildDeck() {
         title: "All U.S. Credit Unions",
         num: "4,374",
         sub: "NCUA 5300 — public regulatory data",
-        detail: "Call Report AI has no JH relationship requirement. Any of the 4,374 US credit unions with $2.5T in assets is addressable — JH relationship accelerates but doesn't gate distribution.",
-        badge: "CALLRPT AI",
+        detail: "Future open-data opportunity: NCUA 5300 regulatory intelligence requires no JH relationship. Any of the 4,374 U.S. CUs with $2.5T in assets is addressable — a long-tail expansion lever after core FI penetration.",
+        badge: "FUTURE",
       },
     ];
 
@@ -245,7 +245,7 @@ async function buildDeck() {
 
     // Bottom summary bar
     s.addShape(pres.shapes.RECTANGLE, { x: 0.3, y: 5.00, w: 9.4, h: 0.50, fill: { color: NAVY }, line: { color: NAVY } });
-    s.addText("Phase 1 targets the 1,660 core FIs first — then expands payment apps to the 5,870 complementary clients and Call Report AI to all 4,374 U.S. CUs.", {
+    s.addText("Phase 1 targets the 1,660 core FIs first — Zelle Memo Intelligence launching now, then expanding across DS apps and payment-only FIs as pipelines mature.", {
       x: 0.5, y: 5.03, w: 9.0, h: 0.44,
       fontSize: 11, fontFace: FONT_B, bold: true, color: WHITE, valign: "middle", margin: 0
     });
@@ -311,8 +311,8 @@ async function buildDeck() {
     });
 
     const apps = [
+      { name: "Zelle Memo\nIntelligence",             desc: "NLP pipeline to classify Zelle memos for fraud patterns, elder abuse, and compliance flags — automatically.", color: A2, icon: FaMobileAlt, badge: "NOW" },
       { name: "Churn\nSentinel",       desc: "ML scoring to identify at-risk FI customers weekly and power proactive retention workflows before churn occurs.", color: A1, icon: FaUserMinus },
-      { name: "Zelle Memo\nIntelligence",             desc: "NLP pipeline to classify Zelle memos for fraud patterns, elder abuse, and compliance flags — automatically.", color: A2, icon: FaMobileAlt },
       { name: "Anomaly\nDetection",                  desc: "Real-time ML detection of unusual account behavior and transaction patterns across JH-powered institutions.", color: A3, icon: FaExclamationTriangle },
       { name: "FI Decision\nStudio",                 desc: "No-code AutoML for FIs: upload data, train custom models, explain with SHAP, author rules, deploy as API, monitor drift.", color: A6, icon: FaSlidersH },
       { name: "CommercialSignal",  desc: "ML classifier surfacing personal accounts with commercial transaction signatures — converting hidden SMB relationships to business banking.", color: A7, icon: FaBriefcase },
@@ -339,6 +339,17 @@ async function buildDeck() {
         x: x + 0.12, y: y + 0.80, w: 2.72, h: 1.28,
         fontSize: 10.5, fontFace: FONT_B, color: DK_GRAY, margin: 0
       });
+      // "NOW" launch badge (top-right corner)
+      if (app.badge) {
+        s.addShape(pres.shapes.RECTANGLE, {
+          x: x + 2.96 - 0.78, y: y, w: 0.78, h: 0.28,
+          fill: { color: TECH }, line: { color: TECH }
+        });
+        s.addText(app.badge, {
+          x: x + 2.96 - 0.78, y: y, w: 0.78, h: 0.28,
+          fontSize: 8.5, fontFace: FONT_H, bold: true, color: NAVY, align: "center", valign: "middle", margin: 0, charSpacing: 1
+        });
+      }
     }
 
     // Horizon callout strip
@@ -353,6 +364,31 @@ async function buildDeck() {
   // SLIDES 5–9 — APP DETAIL SLIDES
   // ==========================================================
   const appDetails = [
+    {
+      name: "Zelle Memo Intelligence",
+      launchNow: true,
+      icon: FaMobileAlt,
+      color: A2,
+      problem: "Zelle transaction volumes across JH-powered institutions have grown 40%+ year-over-year. Free-text memos contain fraud signals, elder abuse patterns, and compliance triggers — but manual review at scale is impossible and static rules miss adaptive language.",
+      painPoints: [
+        "Manual memo review is expensive and impossible to scale",
+        "Pattern-based rules miss novel language and obfuscation",
+        "No systemic link between memo text and SAR filings",
+        "Compliance exposure growing with every Zelle transaction",
+      ],
+      solution: "An NLP classification and entity-extraction pipeline using fine-tuned transformer models — deployed within JH's compliance infrastructure to classify Zelle memos in near-real-time and surface risk-ranked alerts for examiner review.",
+      approach: [
+        "Fine-tuned DistilBERT / RoBERTa on labeled memo corpus",
+        "Entity extraction: amounts, counterparties, intent signals",
+        "Risk score → automated alert queue integration",
+        "Attention visualization for compliance examiner review",
+      ],
+      metrics: [
+        { val: "60%", label: "Reduction in manual\nmemo review hours per FI" },
+        { val: "$250K+", label: "Annual compliance cost\nsavings per FI (est.)" },
+        { val: "Q4 2026", label: "Target JH platform\ndelivery" },
+      ],
+    },
     {
       name: "Churn Sentinel",
       icon: FaUserMinus,
@@ -378,30 +414,6 @@ async function buildDeck() {
       ],
     },
     {
-      name: "Zelle Memo Intelligence",
-      icon: FaMobileAlt,
-      color: A2,
-      problem: "Zelle transaction volumes across JH-powered institutions have grown 40%+ year-over-year. Free-text memos contain fraud signals, elder abuse patterns, and compliance triggers — but manual review at scale is impossible and static rules miss adaptive language.",
-      painPoints: [
-        "Manual memo review is expensive and impossible to scale",
-        "Pattern-based rules miss novel language and obfuscation",
-        "No systemic link between memo text and SAR filings",
-        "Compliance exposure growing with every Zelle transaction",
-      ],
-      solution: "An NLP classification and entity-extraction pipeline using fine-tuned transformer models — deployed within JH's compliance infrastructure to classify Zelle memos in near-real-time and surface risk-ranked alerts for examiner review.",
-      approach: [
-        "Fine-tuned DistilBERT / RoBERTa on labeled memo corpus",
-        "Entity extraction: amounts, counterparties, intent signals",
-        "Risk score → automated alert queue integration",
-        "Attention visualization for compliance examiner review",
-      ],
-      metrics: [
-        { val: "60%", label: "Reduction in manual\nmemo review hours per FI" },
-        { val: "$250K+", label: "Annual compliance cost\nsavings per FI (est.)" },
-        { val: "Q4 2026", label: "Target JH platform\ndelivery" },
-      ],
-    },
-    {
       name: "Anomaly Detection",
       icon: FaExclamationTriangle,
       color: A3,
@@ -422,54 +434,6 @@ async function buildDeck() {
       metrics: [
         { val: "$1–2M", label: "Annual fraud loss saved\nper FI (est.)" },
         { val: "70%", label: "False positive\nreduction target" },
-        { val: "Q1 FY27", label: "Target JH platform\ndelivery" },
-      ],
-    },
-    {
-      name: "Call Report AI",
-      icon: FaFileAlt,
-      color: A4,
-      problem: "Credit union executives lack real-time, actionable intelligence from NCUA 5300 call report data. Extracting peer benchmarks, spotting risk trends, and generating board-ready summaries requires manual data pulls, Excel gymnastics, and hours of analyst time every quarter.",
-      painPoints: [
-        "NCUA 5300 data is public but difficult to query at scale",
-        "Peer benchmarking requires manual multi-institution comparison",
-        "Board and exec briefs take hours to prepare from raw data",
-        "No early warning system for emerging credit quality or capital risk",
-      ],
-      solution: "CallRpt AI — in active development, targeting Aug/Sept 2026 as a fast follow to JHBI approval — is a Claude-powered executive intelligence platform ingesting NCUA 5300 data for all 4,374 U.S. credit unions, with Payments and Core data modules to follow.",
-      approach: [
-        "Market Pulse: industry health score, KPIs, 8-quarter trend charts",
-        "Ask: Claude-powered NL Q&A on full NCUA 5300 dataset",
-        "Compare: percentile benchmarking + similar CU discovery",
-        "AI Executive Brief: one-click Claude summary per institution",
-      ],
-      metrics: [
-        { val: "Aug '26", label: "Target launch — fast\nfollow to JHBI approval" },
-        { val: "4,374", label: "U.S. credit unions\nindexed in the platform" },
-        { val: "$2.5T", label: "Total assets covered\nacross all institutions" },
-      ],
-    },
-    {
-      name: "Account Opening Lifetime Value",
-      icon: FaChartLine,
-      color: A5,
-      problem: "FI clients using JH's account opening platform treat every new applicant identically — the same onboarding experience, the same cross-sell timing, regardless of predicted value. High-LTV customers are underinvested; resources are wasted on low-value accounts.",
-      painPoints: [
-        "No LTV signal available at the account opening stage",
-        "Cross-sell sequencing is time-based, not value-informed",
-        "Acquisition ROI unmeasured by customer cohort value",
-        "Onboarding resources undifferentiated across channels",
-      ],
-      solution: "A CatBoost + AutoGluon LTV regression model scoring new accounts at opening — using behavioral archetypes, product signals, and demographic proxies to route applicants to differentiated service tiers and trigger ML-guided cross-sell sequencing.",
-      approach: [
-        "CatBoost regression + AutoGluon ensemble LTV scoring",
-        "SHAP feature attribution for banker-facing explanations",
-        "Integration with JH CRM for tiered onboarding routing",
-        "Cohort tracking dashboard to validate model accuracy over time",
-      ],
-      metrics: [
-        { val: "$800K+", label: "Incremental revenue\nper FI in Year 1 (est.)" },
-        { val: "3–5×", label: "Cross-sell conversion\nimprovement" },
         { val: "Q1 FY27", label: "Target JH platform\ndelivery" },
       ],
     },
@@ -739,18 +703,6 @@ async function buildDeck() {
         color: A3
       },
       {
-        app: "Call Report AI",
-        savings: "$100–$300K / year",
-        how: "Analyst hours eliminated for peer benchmarking, board prep, and quarterly NCUA 5300 review; Aug/Sept 2026 launch",
-        color: A4
-      },
-      {
-        app: "Account Opening LTV",
-        savings: "$500K–$1.5M / year",
-        how: "Tiered onboarding + 3–5× cross-sell improvement across 5,000–10,000 new accounts",
-        color: A5
-      },
-      {
         app: "CommercialSignal",
         savings: "$400K–$1.2M / year",
         how: "SMB conversion revenue from business checking, treasury, and SBA loans on identified commercial-use accounts",
@@ -787,146 +739,6 @@ async function buildDeck() {
     s.addText("COMBINED POTENTIAL VALUE PER FI", { x: 0.55, y: totalY + 0.03, w: 2.75, h: 0.40, fontSize: 10, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0 });
     s.addText("$4–10M+ / year", { x: 3.4, y: totalY + 0.03, w: 1.95, h: 0.40, fontSize: 11, fontFace: FONT_H, bold: true, color: TECH, valign: "middle", margin: 0 });
     s.addText("Conservative aggregate across all 7 Phase 1–2 applications", { x: 5.5, y: totalY + 0.03, w: 4.0, h: 0.40, fontSize: 9.5, fontFace: FONT_B, color: LT_GRAY, valign: "middle", margin: 0 });
-  }
-
-  // ==========================================================
-  // SLIDE — PRICING TIERS (3-tier SaaS model)
-  // ==========================================================
-  {
-    const s = pres.addSlide();
-    s.background = { color: SKY_BG };
-
-    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.72, fill: { color: NAVY }, line: { color: NAVY } });
-    s.addText("JH Intelligence Platform — Pricing Architecture", {
-      x: 0.4, y: 0.08, w: 9.2, h: 0.56,
-      fontSize: 22, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0
-    });
-    s.addText("Asset-tiered SaaS subscription — priced to fit every institution from $50M community CUs to $200B+ tier-1 FIs, with modules that expand as JH adds data sources.", {
-      x: 0.4, y: 0.84, w: 9.2, h: 0.38,
-      fontSize: 12, fontFace: FONT_B, color: DK_GRAY, margin: 0
-    });
-
-    // Three tier cards
-    const tiers = [
-      {
-        name: "Insight",
-        tagline: "Entry point for emerging\nand community FIs",
-        price: "$750 – $2,500",
-        unit: "/ month per institution",
-        assets: "Institutions < $500M assets",
-        color: COBALT_M,
-        features: [
-          "CallRpt AI — NCUA 5300 intelligence",
-          "Market Pulse dashboard (industry KPIs)",
-          "Peer benchmarking (10 comparisons / mo)",
-          "AI Q&A — 100 queries / month",
-          "Standard executive brief templates",
-          "Email support",
-        ],
-        highlight: false,
-      },
-      {
-        name: "Intelligence",
-        tagline: "Full DS platform for\ngrowth-stage FIs",
-        price: "$2,500 – $8,000",
-        unit: "/ month per institution",
-        assets: "$500M – $5B assets",
-        color: COBALT,
-        features: [
-          "Everything in Insight",
-          "Churn / Attrition Mediation scores",
-          "Account Opening Lifetime Value model",
-          "Unlimited peer benchmarking + API",
-          "AI Q&A — unlimited queries",
-          "CRM integration + outreach triggers",
-          "Dedicated onboarding support",
-        ],
-        highlight: true,
-      },
-      {
-        name: "Enterprise",
-        tagline: "Custom platform for\nlarge & complex FIs",
-        price: "$10,000+",
-        unit: "/ month — custom scoped",
-        assets: "$5B+ assets",
-        color: NAVY,
-        features: [
-          "Everything in Intelligence",
-          "Zelle Memo Intelligence pipeline",
-          "Anomaly Detection (real-time streaming)",
-          "White-labeled client-facing portal",
-          "Full REST API suite + webhooks",
-          "Custom model training on FI data",
-          "Dedicated success manager",
-        ],
-        highlight: false,
-      },
-    ];
-
-    for (let i = 0; i < tiers.length; i++) {
-      const t = tiers[i];
-      const x = 0.3 + i * 3.18;
-      const cardBg = t.highlight ? NAVY : WHITE;
-      const textColor = t.highlight ? WHITE : DK_GRAY;
-      const mutedColor = t.highlight ? LT_GRAY : MD_GRAY;
-      const borderColor = t.highlight ? COBALT : LT_GRAY;
-
-      // Card
-      s.addShape(pres.shapes.RECTANGLE, { x, y: 1.32, w: 3.05, h: 4.15, fill: { color: cardBg }, line: { color: borderColor }, shadow: mkSh() });
-      // Top color band
-      s.addShape(pres.shapes.RECTANGLE, { x, y: 1.32, w: 3.05, h: 0.52, fill: { color: t.color }, line: { color: t.color } });
-
-      // Tier name + "RECOMMENDED" badge on middle card
-      s.addText(t.name.toUpperCase(), {
-        x: x + 0.15, y: 1.37, w: t.highlight ? 1.8 : 2.75, h: 0.42,
-        fontSize: 14, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0, charSpacing: 1
-      });
-      if (t.highlight) {
-        s.addShape(pres.shapes.RECTANGLE, { x: x + 1.98, y: 1.42, w: 1.0, h: 0.3, fill: { color: TECH }, line: { color: TECH } });
-        s.addText("RECOMMENDED", {
-          x: x + 1.98, y: 1.42, w: 1.0, h: 0.3,
-          fontSize: 7, fontFace: FONT_B, bold: true, color: NAVY, align: "center", valign: "middle", margin: 0, charSpacing: 0.5
-        });
-      }
-
-      // Asset band
-      s.addText(t.assets, {
-        x: x + 0.12, y: 1.9, w: 2.82, h: 0.28,
-        fontSize: 9.5, fontFace: FONT_B, color: t.color, margin: 0, bold: true
-      });
-
-      // Price
-      s.addText(t.price, {
-        x: x + 0.12, y: 2.2, w: 2.82, h: 0.55,
-        fontSize: 26, fontFace: FONT_H, bold: true, color: t.highlight ? TECH : COBALT, margin: 0
-      });
-      s.addText(t.unit, {
-        x: x + 0.12, y: 2.76, w: 2.82, h: 0.25,
-        fontSize: 9.5, fontFace: FONT_B, color: mutedColor, margin: 0
-      });
-
-      // Divider
-      s.addShape(pres.shapes.RECTANGLE, {
-        x: x + 0.12, y: 3.06, w: 2.82, h: 0.04,
-        fill: { color: t.highlight ? COBALT_M : LT_GRAY }, line: { color: t.highlight ? COBALT_M : LT_GRAY }
-      });
-
-      // Features
-      const featBullets = t.features.map((f, idx) => ({
-        text: f,
-        options: { bullet: true, breakLine: idx < t.features.length - 1, paraSpaceAfter: 4 }
-      }));
-      s.addText(featBullets, {
-        x: x + 0.12, y: 3.14, w: 2.82, h: 2.22,
-        fontSize: 9.5, fontFace: FONT_B, color: textColor, margin: 0
-      });
-    }
-
-    // Bottom note
-    s.addText("All tiers include: SOC 2 compliant data handling · NCUA 5300 + FFIEC base dataset · 99.9% SLA · Quarterly model updates", {
-      x: 0.4, y: 5.46, w: 9.2, h: 0.22,
-      fontSize: 8.5, fontFace: FONT_B, color: MD_GRAY, align: "center", margin: 0, italic: true
-    });
   }
 
   // ==========================================================
@@ -990,24 +802,6 @@ async function buildDeck() {
         color: NAVY_MED,
       },
       {
-        icon: FaFileAlt,
-        name: "Call Report AI (CallRpt AI)",
-        tagline: "NCUA 5300 intelligence — Pulse, Ask, Compare + AI briefs",
-        driver: "Eliminates hours of peer benchmarking & board prep per quarter · Aug/Sept 2026",
-        price: "$300 – $1,000",
-        credit: "Included in all tiers",
-        color: COBALT_M,
-      },
-      {
-        icon: FaUsers,
-        name: "Account Opening LTV Model",
-        tagline: "Lifetime value scoring at account open · tiered onboarding triggers",
-        driver: "3–5× cross-sell lift · 20–30% improvement in 90-day product adoption",
-        price: "$500 – $1,500",
-        credit: "Included in Intelligence+",
-        color: A5,
-      },
-      {
         name: "FI Decision Studio",
         tagline: "No-code AutoML — unsupervised → supervised + rule authoring + API deploy",
         driver: "SR 11-7 defensible SHAP explainability · custom models on FI's own data · no ML team required",
@@ -1058,12 +852,12 @@ async function buildDeck() {
       s.addText(row.credit, { x: 8.58, y: y + 0.12, w: 1.28, h: 0.21, fontSize: 6.5, fontFace: FONT_B, color: COBALT, align: "center", valign: "middle", margin: 0 });
     });
 
-    // Total standalone vs bundle bar — totY = 1.42 + 8*0.48 = 5.26
-    const totY = 1.42 + 8 * 0.48;
+    // Total standalone vs bundle bar — totY = 1.42 + 6*0.48 = 4.30
+    const totY = 1.42 + 6 * 0.48;
     s.addShape(pres.shapes.RECTANGLE, { x: 0.35, y: totY, w: 9.55, h: 0.32, fill: { color: NAVY }, line: { color: NAVY } });
-    s.addText("STANDALONE TOTAL — ALL EIGHT APPS (MID-MARKET FI)", { x: 0.52, y: totY + 0.03, w: 4.5, h: 0.26, fontSize: 9, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0 });
-    s.addText("~$8,100 / mo", { x: 6.95, y: totY + 0.03, w: 1.55, h: 0.26, fontSize: 12, fontFace: FONT_H, bold: true, color: TECH, align: "center", valign: "middle", margin: 0 });
-    s.addText("vs. ~$6,000 bundled", { x: 8.35, y: totY + 0.04, w: 1.52, h: 0.22, fontSize: 8.5, fontFace: FONT_B, color: TECH, align: "center", valign: "middle", margin: 0 });
+    s.addText("STANDALONE TOTAL — ALL SIX APPS (MID-MARKET FI)", { x: 0.52, y: totY + 0.03, w: 4.5, h: 0.26, fontSize: 9, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0 });
+    s.addText("~$6,300 / mo", { x: 6.95, y: totY + 0.03, w: 1.55, h: 0.26, fontSize: 12, fontFace: FONT_H, bold: true, color: TECH, align: "center", valign: "middle", margin: 0 });
+    s.addText("bundling option in Year 2", { x: 8.35, y: totY + 0.04, w: 1.52, h: 0.22, fontSize: 8.5, fontFace: FONT_B, color: TECH, align: "center", valign: "middle", margin: 0 });
   }
 
   // ==========================================================
@@ -1088,8 +882,8 @@ async function buildDeck() {
       {
         phase: "NOW",
         module: "Regulatory Intelligence",
-        sources: "NCUA 5300  ·  FFIEC Call Reports",
-        apps: "CallRpt AI  ·  Compliance Monitoring",
+        sources: "JHA PayCenter  ·  ACH / Zelle transaction feeds",
+        apps: "Zelle Memo Intelligence  ·  Compliance Monitoring",
         arr500: "$4.5M", arr2k: "$9M", arr8k: "$15M",
         color: COBALT,
         desc: "Public regulatory data — lowest friction entry point. Foundation of the platform.",
@@ -2032,53 +1826,320 @@ ANTICIPATED QUESTION: "Why not price per-account or per-user?"
 Answer: Per-FI annual subscription is the dominant SaaS model in fintech B2B. It's predictable, easy for FI budget owners to approve (single line item), and doesn't require us to instrument usage metering in Year 1. We can layer consumption pricing in Year 2 once instrumentation is in place.`);
   }
 
+
   // ==========================================================
-  // SLIDE 15 — NEXT STEPS (dark closing)
+  // SLIDE — ARCU & JHAKNOW → JHBI ADOPTION ROADMAP
+  // ==========================================================
+  {
+    const s = pres.addSlide();
+    s.background = { color: WHITE };
+
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.08, fill: { color: COBALT }, line: { color: COBALT } });
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.15, h: 5.625, fill: { color: COBALT }, line: { color: COBALT } });
+
+    s.addText("PLATFORM TRANSITION", {
+      x: 0.4, y: 0.18, w: 9, h: 0.28,
+      fontSize: 9, fontFace: FONT_H, bold: true, color: COBALT, charSpacing: 4, margin: 0
+    });
+    s.addText("ARCU & JHAKnow → JHBI: Four-Quarter Migration", {
+      x: 0.4, y: 0.52, w: 9, h: 0.5,
+      fontSize: 24, fontFace: FONT_H, bold: true, color: NAVY, margin: 0
+    });
+    s.addText("Existing ARCU and JHAKnow subscribers migrate to JHBI at current pricing  ·  Net-new JHBI clients enter at platform rates  ·  DS apps available as add-ons from Day 1", {
+      x: 0.4, y: 1.07, w: 9.4, h: 0.28,
+      fontSize: 10.5, fontFace: FONT_B, color: DK_GRAY, margin: 0
+    });
+
+    // ── Four-quarter timeline columns ──
+    const quarters = [
+      { q: "Q1 FY27", cal: "Jul–Sep 2026", label: "FALL LAUNCH", color: COBALT },
+      { q: "Q2 FY27", cal: "Oct–Dec 2026", label: "WAVE 1",      color: COBALT_D },
+      { q: "Q3 FY27", cal: "Jan–Mar 2027", label: "WAVE 2",      color: "0A52C4" },
+      { q: "Q4 FY27", cal: "Apr–Jun 2027", label: "FULL BASE",   color: NAVY },
+    ];
+    const colW = 2.30, colGap = 0.10;
+    const colStartX = 0.35;
+    const timelineY = 1.45;
+
+    quarters.forEach((q, i) => {
+      const x = colStartX + i * (colW + colGap);
+
+      // Quarter header pill
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+        x, y: timelineY, w: colW, h: 0.52,
+        fill: { color: q.color }, line: { color: q.color }, rectRadius: 0.06
+      });
+      s.addText(q.q, {
+        x, y: timelineY + 0.02, w: colW, h: 0.26,
+        fontSize: 12, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0
+      });
+      s.addText(q.cal, {
+        x, y: timelineY + 0.28, w: colW, h: 0.20,
+        fontSize: 8.5, fontFace: FONT_B, color: "BCD4FF", align: "center", margin: 0
+      });
+
+      // Label badge
+      s.addShape(pres.shapes.RECTANGLE, {
+        x: x + 0.55, y: timelineY + 0.56, w: colW - 1.10, h: 0.22,
+        fill: { color: TECH }, line: { color: TECH }
+      });
+      s.addText(q.label, {
+        x: x + 0.55, y: timelineY + 0.56, w: colW - 1.10, h: 0.22,
+        fontSize: 7.5, fontFace: FONT_H, bold: true, color: NAVY, align: "center", valign: "middle", margin: 0, charSpacing: 0.5
+      });
+    });
+
+    // ── CU Track ──
+    const cuTrack = [
+      { q: 0, title: "Pilot Cohort",     body: "50 ARCU CUs invited to JHBI preview\nGrandfathered pricing locked in\nZelle Memo Intelligence available Day 1" },
+      { q: 1, title: "Wave 1 Migration", body: "~200 ARCU CUs converted to JHBI\nSelf-service portal launched\nChurn Sentinel add-on available" },
+      { q: 2, title: "Wave 2 Migration", body: "~350 ARCU CUs onboarded\nCommercialSignal add-on active\nFull ARCU base substantially migrated" },
+      { q: 3, title: "Migration Complete",body: "All 720 CUs on JHBI platform\nNet-new CU acquisition at JHBI rates\nDS app bundling conversation begins" },
+    ];
+
+    // ── Bank Track ──
+    const bankTrack = [
+      { q: 0, title: "Pilot Cohort",     body: "30 JHAKnow banks invited to JHBI preview\nGrandfathered pricing confirmed\nZelle Memo Intelligence available" },
+      { q: 1, title: "Wave 1 Migration", body: "~250 JHAKnow banks converted\nCore + Banno data pipelines enabled\nChurn Sentinel Phase 2 signals" },
+      { q: 2, title: "Wave 2 Migration", body: "~400 banks onboarded to JHBI\nCommercialSignal add-on active\nJHAKnow base ~70% migrated" },
+      { q: 3, title: "Migration Complete",body: "All 940 banks on JHBI platform\nNet-new bank acquisition at JHBI rates\nFull DS add-on suite available" },
+    ];
+
+    const trackConfigs = [
+      { label: "CU TRACK", sublabel: "ARCU → JHBI  ·  720 credit unions", color: COBALT, rows: cuTrack, trackY: 2.38 },
+      { label: "BANK TRACK", sublabel: "JHAKnow → JHBI  ·  940 banks", color: NAVY, rows: bankTrack, trackY: 3.98 },
+    ];
+
+    trackConfigs.forEach(track => {
+      // Track label
+      s.addShape(pres.shapes.RECTANGLE, {
+        x: colStartX, y: track.trackY, w: colW * 4 + colGap * 3, h: 0.26,
+        fill: { color: track.color }, line: { color: track.color }
+      });
+      s.addText(track.label + "  ·  " + track.sublabel, {
+        x: colStartX + 0.14, y: track.trackY, w: colW * 4, h: 0.26,
+        fontSize: 9, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0, charSpacing: 0.5
+      });
+
+      // Quarter cards
+      track.rows.forEach(cell => {
+        const x = colStartX + cell.q * (colW + colGap);
+        const cardY = track.trackY + 0.26;
+        const cardH = 1.30;
+        s.addShape(pres.shapes.RECTANGLE, {
+          x, y: cardY, w: colW, h: cardH,
+          fill: { color: "F4F7FE" }, line: { color: LT_GRAY }
+        });
+        s.addText(cell.title, {
+          x: x + 0.1, y: cardY + 0.06, w: colW - 0.2, h: 0.24,
+          fontSize: 9.5, fontFace: FONT_H, bold: true, color: NAVY, margin: 0
+        });
+        s.addText(cell.body.replace(/\\n/g, "\n"), {
+          x: x + 0.1, y: cardY + 0.32, w: colW - 0.2, h: 0.94,
+          fontSize: 8.5, fontFace: FONT_B, color: DK_GRAY, margin: 0
+        });
+      });
+    });
+
+    // ── Pricing callout bar ──
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+      x: 0.35, y: 5.28, w: 9.3, h: 0.26,
+      fill: { color: "E8F0FD" }, line: { color: "BCD0F5" }, rectRadius: 0.04
+    });
+    s.addText("PRICING CONTINUITY: Existing ARCU/JHAKnow subscribers lock in current rates. Net-new JHBI clients pay platform pricing. DS apps are incremental add-ons for all.", {
+      x: 0.5, y: 5.30, w: 9.1, h: 0.22,
+      fontSize: 8.5, fontFace: FONT_B, color: COBALT, margin: 0
+    });
+
+    s.addNotes(`ARCU & JHAKnow → JHBI TRANSITION — Presenter Talking Points
+
+OPENING FRAME:
+"This slide addresses a question leadership will ask: what happens to our existing ARCU and JHAKnow customers? The answer is: they get the better product at their current price, and we grow from there."
+
+THE TRANSITION STORY:
+• ARCU and JHAKnow are being replaced by JHBI — Jack Henry's next-generation intelligence platform. JHBI is the unified successor, combining the capabilities of both into a single platform with a richer data model.
+• 720 credit unions currently on ARCU. 940 banks on JHAKnow. Total: 1,660 core FIs — all of whom are JHBI's addressable base for Day 1.
+• The migration is structured as a wave-based program over 4 quarters (Fall 2026 through Spring 2027), with pilot cohorts in Q1 FY27 to work out onboarding issues before scale.
+
+PRICING CONTINUITY — THE KEY MESSAGE:
+• Existing subscribers get JHBI at their current rate. This is a loyalty signal and removes friction from the migration conversation.
+• Net-new FIs (any FI joining JHBI that was NOT on ARCU or JHAKnow) pay JHBI platform rates — which is how we grow revenue without raising prices on existing clients.
+• DS apps are add-on subscriptions for ALL clients regardless of migration status. Zelle Memo Intelligence is available from Day 1.
+
+THE CU TRACK:
+• 720 ARCU credit unions. Pilot cohort of 50 in Q1 FY27 — focused on digital-forward CUs with Zelle enabled (strongest immediate DS app fit).
+• Waves 1 and 2 (Q2-Q3 FY27) convert the bulk of the base. By Q4 FY27, all 720 CUs are on JHBI.
+• Key hooks: Zelle Memo Intelligence (Q1), Churn Sentinel (Q2), CommercialSignal (Q3).
+
+THE BANK TRACK:
+• 940 JHAKnow banks. Pilot cohort of 30 — focus on mid-size community banks ($250M–$1B) with the clearest ROI profile for DS apps.
+• Bank waves follow the same timing. By Q4 FY27, full bank base is on JHBI.
+• JHAKnow banks tend to have stronger commercial banking activity — CommercialSignal and Churn Sentinel are the strongest initial DS app conversations.
+
+ANTICIPATED OBJECTION: "Won't existing clients feel shortchanged if new clients get a better deal?"
+Answer: No — existing clients get price protection AND access to the new platform. The premium pricing is for net-new relationships. This is standard SaaS migration practice (Salesforce, HubSpot all do this).
+
+REVENUE IMPLICATION:
+• As the existing base migrates, DS add-on revenue builds. The path to $1M ARR we showed (4.9% penetration) is achievable entirely within the migrating base — no net-new JH client required.`);
+  }
+
+  // ==========================================================
+  // APPENDIX — PRICING TIERS (reference)
   // ==========================================================
   {
     const s = pres.addSlide();
     s.background = { color: NAVY };
-
-    // Decorative circles
-    s.addShape(pres.shapes.OVAL, { x: 5.5, y: -2.0, w: 7.5, h: 7.5, fill: { color: COBALT, transparency: 90 }, line: { color: COBALT, transparency: 82 } });
-    s.addShape(pres.shapes.OVAL, { x: 7.0, y: 1.2, w: 4.0, h: 4.0, fill: { color: TECH, transparency: 90 }, line: { color: TECH, transparency: 82 } });
     s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.15, h: 5.625, fill: { color: COBALT }, line: { color: COBALT } });
-
-    s.addText("NEXT STEPS", {
-      x: 0.4, y: 0.48, w: 6, h: 0.38,
-      fontSize: 11, fontFace: FONT_H, bold: true, color: TECH, margin: 0, charSpacing: 4
+    s.addText("APPENDIX", {
+      x: 0.4, y: 2.4, w: 9, h: 0.6,
+      fontSize: 36, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0, charSpacing: 6
     });
-    s.addText("Approve the Roadmap.\nFund the Team.", {
-      x: 0.4, y: 0.95, w: 7.2, h: 1.5,
-      fontSize: 40, fontFace: FONT_H, bold: true, color: WHITE, margin: 0
-    });
-
-    const steps = [
-      { num: "1", text: "JHBI approves headcount budget and infrastructure allocation for Phase 1" },
-      { num: "2", text: "DS team begins recruiting: Data Engineers + ML Engineers (Month 1)" },
-      { num: "3", text: "Cloud platform procurement and ML environment setup (Months 1–2)" },
-      { num: "4", text: "Churn Sentinel Phase 1 scoping: ACH pipeline access + direct deposit monitoring spec (Month 2)" },
-      { num: "5", text: "Bi-weekly DS steering committee established for roadmap governance" },
-    ];
-
-    steps.forEach((st, i) => {
-      const y = 2.62 + i * 0.52;
-      s.addShape(pres.shapes.OVAL, { x: 0.4, y: y - 0.01, w: 0.36, h: 0.36, fill: { color: COBALT }, line: { color: COBALT } });
-      s.addText(st.num, {
-        x: 0.4, y: y - 0.01, w: 0.36, h: 0.36,
-        fontSize: 11, fontFace: FONT_H, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0
-      });
-      s.addText(st.text, {
-        x: 0.88, y: y + 0.04, w: 6.5, h: 0.3,
-        fontSize: 12, fontFace: FONT_B, color: LT_GRAY, margin: 0
-      });
-    });
-
-    s.addText("Powering the Financial World™  |  Jack Henry Data & Analytics Team  |  March 2026", {
-      x: 0.4, y: 5.28, w: 9.0, h: 0.26,
-      fontSize: 9.5, fontFace: FONT_B, color: MD_GRAY, margin: 0
+    s.addText("Pricing Tier Architecture — Reference", {
+      x: 0.4, y: 3.1, w: 9, h: 0.36,
+      fontSize: 16, fontFace: FONT_B, color: MD_GRAY, align: "center", margin: 0
     });
   }
+
+  // APPENDIX — PRICING TIERS DETAIL
+  // ==========================================================
+  {
+    const s = pres.addSlide();
+    s.background = { color: SKY_BG };
+
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.72, fill: { color: NAVY }, line: { color: NAVY } });
+    s.addText("Appendix: JH Intelligence Platform — Pricing Architecture", {
+      x: 0.4, y: 0.08, w: 9.2, h: 0.56,
+      fontSize: 22, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0
+    });
+    s.addText("Asset-tiered SaaS subscription — priced to fit every institution from $50M community CUs to $200B+ tier-1 FIs, with modules that expand as JH adds data sources.", {
+      x: 0.4, y: 0.84, w: 9.2, h: 0.38,
+      fontSize: 12, fontFace: FONT_B, color: DK_GRAY, margin: 0
+    });
+
+    // Three tier cards
+    const tiers = [
+      {
+        name: "Insight",
+        tagline: "Entry point for emerging\nand community FIs",
+        price: "$750 – $2,500",
+        unit: "/ month per institution",
+        assets: "Institutions < $500M assets",
+        color: COBALT_M,
+        features: [
+          "CallRpt AI — NCUA 5300 intelligence",
+          "Market Pulse dashboard (industry KPIs)",
+          "Peer benchmarking (10 comparisons / mo)",
+          "AI Q&A — 100 queries / month",
+          "Standard executive brief templates",
+          "Email support",
+        ],
+        highlight: false,
+      },
+      {
+        name: "Intelligence",
+        tagline: "Full DS platform for\ngrowth-stage FIs",
+        price: "$2,500 – $8,000",
+        unit: "/ month per institution",
+        assets: "$500M – $5B assets",
+        color: COBALT,
+        features: [
+          "Everything in Insight",
+          "Churn / Attrition Mediation scores",
+          "Account Opening Lifetime Value model",
+          "Unlimited peer benchmarking + API",
+          "AI Q&A — unlimited queries",
+          "CRM integration + outreach triggers",
+          "Dedicated onboarding support",
+        ],
+        highlight: true,
+      },
+      {
+        name: "Enterprise",
+        tagline: "Custom platform for\nlarge & complex FIs",
+        price: "$10,000+",
+        unit: "/ month — custom scoped",
+        assets: "$5B+ assets",
+        color: NAVY,
+        features: [
+          "Everything in Intelligence",
+          "Zelle Memo Intelligence pipeline",
+          "Anomaly Detection (real-time streaming)",
+          "White-labeled client-facing portal",
+          "Full REST API suite + webhooks",
+          "Custom model training on FI data",
+          "Dedicated success manager",
+        ],
+        highlight: false,
+      },
+    ];
+
+    for (let i = 0; i < tiers.length; i++) {
+      const t = tiers[i];
+      const x = 0.3 + i * 3.18;
+      const cardBg = t.highlight ? NAVY : WHITE;
+      const textColor = t.highlight ? WHITE : DK_GRAY;
+      const mutedColor = t.highlight ? LT_GRAY : MD_GRAY;
+      const borderColor = t.highlight ? COBALT : LT_GRAY;
+
+      // Card
+      s.addShape(pres.shapes.RECTANGLE, { x, y: 1.32, w: 3.05, h: 4.15, fill: { color: cardBg }, line: { color: borderColor }, shadow: mkSh() });
+      // Top color band
+      s.addShape(pres.shapes.RECTANGLE, { x, y: 1.32, w: 3.05, h: 0.52, fill: { color: t.color }, line: { color: t.color } });
+
+      // Tier name + "RECOMMENDED" badge on middle card
+      s.addText(t.name.toUpperCase(), {
+        x: x + 0.15, y: 1.37, w: t.highlight ? 1.8 : 2.75, h: 0.42,
+        fontSize: 14, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0, charSpacing: 1
+      });
+      if (t.highlight) {
+        s.addShape(pres.shapes.RECTANGLE, { x: x + 1.98, y: 1.42, w: 1.0, h: 0.3, fill: { color: TECH }, line: { color: TECH } });
+        s.addText("RECOMMENDED", {
+          x: x + 1.98, y: 1.42, w: 1.0, h: 0.3,
+          fontSize: 7, fontFace: FONT_B, bold: true, color: NAVY, align: "center", valign: "middle", margin: 0, charSpacing: 0.5
+        });
+      }
+
+      // Asset band
+      s.addText(t.assets, {
+        x: x + 0.12, y: 1.9, w: 2.82, h: 0.28,
+        fontSize: 9.5, fontFace: FONT_B, color: t.color, margin: 0, bold: true
+      });
+
+      // Price
+      s.addText(t.price, {
+        x: x + 0.12, y: 2.2, w: 2.82, h: 0.55,
+        fontSize: 26, fontFace: FONT_H, bold: true, color: t.highlight ? TECH : COBALT, margin: 0
+      });
+      s.addText(t.unit, {
+        x: x + 0.12, y: 2.76, w: 2.82, h: 0.25,
+        fontSize: 9.5, fontFace: FONT_B, color: mutedColor, margin: 0
+      });
+
+      // Divider
+      s.addShape(pres.shapes.RECTANGLE, {
+        x: x + 0.12, y: 3.06, w: 2.82, h: 0.04,
+        fill: { color: t.highlight ? COBALT_M : LT_GRAY }, line: { color: t.highlight ? COBALT_M : LT_GRAY }
+      });
+
+      // Features
+      const featBullets = t.features.map((f, idx) => ({
+        text: f,
+        options: { bullet: true, breakLine: idx < t.features.length - 1, paraSpaceAfter: 4 }
+      }));
+      s.addText(featBullets, {
+        x: x + 0.12, y: 3.14, w: 2.82, h: 2.22,
+        fontSize: 9.5, fontFace: FONT_B, color: textColor, margin: 0
+      });
+    }
+
+    // Bottom note
+    s.addText("All tiers include: SOC 2 compliant data handling · NCUA 5300 + FFIEC base dataset · 99.9% SLA · Quarterly model updates", {
+      x: 0.4, y: 5.46, w: 9.2, h: 0.22,
+      fontSize: 8.5, fontFace: FONT_B, color: MD_GRAY, align: "center", margin: 0, italic: true
+    });
+  }
+
+  // ==========================================================
 
   // ==========================================================
   // WRITE FILE
