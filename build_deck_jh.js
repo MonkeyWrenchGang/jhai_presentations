@@ -410,7 +410,7 @@ async function buildDeck() {
       metrics: [
         { val: "$1–3M", label: "Annual revenue protected\nper FI ($1B deposits)" },
         { val: "15–25%", label: "Reduction in churn\nrate for FI clients" },
-        { val: "Q3 FY26", label: "Phase 1 ACH Sentinel\ntarget launch" },
+        { val: "Q1 FY27", label: "Phase 1 ACH Sentinel\ntarget launch" },
       ],
     },
     {
@@ -1047,9 +1047,9 @@ async function buildDeck() {
         icon: FaDatabase,
         bullets: [
           "FI behavioral data pipelines from JH core systems",
-          "Real-time streaming infrastructure (Kafka / event bus)",
+          "Pub/Sub streaming → BigQuery / Databricks Medallion architecture",
           "Data quality monitoring & lineage tracking",
-          "Enterprise data catalog and governance framework",
+          "Alation data catalog — governed, discoverable, audit-ready",
           "Aggregated cross-FI benchmarking data (anonymized)",
         ],
       },
@@ -1085,11 +1085,11 @@ async function buildDeck() {
         color: DK_GRAY,
         icon: FaCode,
         bullets: [
-          "Lightweight internal AI apps embedded in JH ecosystem",
-          "REST APIs distributing model scores to JH products",
-          "Banno + JH Enterprise integration for score consumption",
+          "API-first architecture — model scores exposed as versioned REST APIs",
+          "JHBI self-service FI portal: score explorer, thresholds, export",
+          "Banno + JH Enterprise integration for real-time score consumption",
           "Alerting and workflow orchestration service layer",
-          "Role-based access control and full audit logging",
+          "Common component library shared across JH AI products",
         ],
       },
     ];
@@ -1135,7 +1135,7 @@ async function buildDeck() {
       fontSize: 22, fontFace: FONT_H, bold: true, color: WHITE, valign: "middle", margin: 0
     });
 
-    s.addText("To execute this roadmap and embed AI capabilities across the JH platform, we are requesting the following headcount and infrastructure investment:", {
+    s.addText("To execute this roadmap and embed AI capabilities across the JH platform, we are requesting 13 FTEs (~$1.9M fully-loaded annual cost) plus infrastructure investment:", {
       x: 0.4, y: 0.84, w: 9.2, h: 0.38,
       fontSize: 12.5, fontFace: FONT_B, color: DK_GRAY, margin: 0
     });
@@ -1144,7 +1144,7 @@ async function buildDeck() {
       [
         { text: "Role",         options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: 11.5, fontFace: FONT_H } },
         { text: "FTEs",         options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: 11.5, fontFace: FONT_H, align: "center" } },
-        { text: "Pillar",       options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: 11.5, fontFace: FONT_H } },
+        { text: "Pillar / Cost", options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: 11.5, fontFace: FONT_H } },
         { text: "Rationale",    options: { bold: true, color: WHITE, fill: { color: NAVY }, fontSize: 11.5, fontFace: FONT_H } },
       ],
       [
@@ -1184,10 +1184,22 @@ async function buildDeck() {
         { text: "Roadmap ownership, FI client discovery, stakeholder alignment",              options: { fontFace: FONT_B, fontSize: 11 } },
       ],
       [
+        { text: "DS Team Lead / Principal Scientist", options: { fontFace: FONT_B, fontSize: 11 } },
+        { text: "1",                           options: { fontFace: FONT_B, fontSize: 11, align: "center" } },
+        { text: "DS Buildout",                 options: { fontFace: FONT_B, fontSize: 11 } },
+        { text: "Technical leadership, architecture decisions, cross-team model governance",   options: { fontFace: FONT_B, fontSize: 11 } },
+      ],
+      [
+        { text: "Data Governance / Quality Eng.", options: { fontFace: FONT_B, fontSize: 11 } },
+        { text: "1",                           options: { fontFace: FONT_B, fontSize: 11, align: "center" } },
+        { text: "Data Acquisition",            options: { fontFace: FONT_B, fontSize: 11 } },
+        { text: "Alation catalog ownership, data quality SLAs, lineage and audit compliance",  options: { fontFace: FONT_B, fontSize: 11 } },
+      ],
+      [
         { text: "TOTAL",                       options: { bold: true, fontFace: FONT_H, fontSize: 11.5, fill: { color: LT_GRAY } } },
-        { text: "11",                          options: { bold: true, fontFace: FONT_H, fontSize: 12, color: NAVY, align: "center", fill: { color: LT_GRAY } } },
-        { text: "",                            options: { fill: { color: LT_GRAY } } },
-        { text: "Full-time equivalents across all four investment pillars",                    options: { italic: true, fontFace: FONT_B, fontSize: 10.5, color: MD_GRAY, fill: { color: LT_GRAY } } },
+        { text: "13",                          options: { bold: true, fontFace: FONT_H, fontSize: 12, color: NAVY, align: "center", fill: { color: LT_GRAY } } },
+        { text: "~$1.9M / yr",                 options: { bold: true, fontFace: FONT_H, fontSize: 11, color: COBALT, align: "center", fill: { color: LT_GRAY } } },
+        { text: "Fully-loaded cost estimate · 13 FTEs across all four investment pillars",    options: { italic: true, fontFace: FONT_B, fontSize: 10.5, color: MD_GRAY, fill: { color: LT_GRAY } } },
       ],
     ];
 
@@ -1574,13 +1586,13 @@ async function buildDeck() {
     });
 
     // ── Stacked bar chart ──
-    const qLabels = ["Q3 FY26", "Q4 FY26", "Q1 FY27", "Q2 FY27", "Q3 FY27", "Q4 FY27 ★", "Q1 FY28", "Q2 FY28"];
-    // Values in $K (divide by 1000, one decimal)
+    const qLabels = ["Q3 FY26", "Q4 FY26", "Q1 FY27", "Q2 FY27", "Q3 FY27", "Q4 FY27", "Q1 FY28 ★", "Q2 FY28"];
+    // Values in $K — corrected for 260 Zelle-enabled FIs and 8% annual churn (2%/quarter)
     const chartData = [
-      { name: "Zelle Memo Intelligence", labels: qLabels, values: [0, 0, 116.4, 203.7, 281.3, 329.8, 368.6, 397.7] },
-      { name: "Churn Sentinel",          labels: qLabels, values: [0, 0,   0,   205.5, 369.9, 506.9, 602.8, 657.6] },
-      { name: "CommercialSignal",        labels: qLabels, values: [0, 0,   0,     0,   111.0, 199.8, 266.4, 321.9] },
-      { name: "Gen. Wealth Deflection",  labels: qLabels, values: [0, 0,   0,     0,     0,     0,    95.2, 163.2] },
+      { name: "Zelle Memo Intelligence", labels: qLabels, values: [0, 0,  48.5,  87.3, 126.1, 164.9, 194.0, 223.1] },
+      { name: "Churn Sentinel",          labels: qLabels, values: [0, 0,   0,   205.5, 383.6, 534.3, 657.6, 753.5] },
+      { name: "CommercialSignal",        labels: qLabels, values: [0, 0,   0,     0,   111.0, 210.9, 299.7, 366.3] },
+      { name: "Gen. Wealth Deflection",  labels: qLabels, values: [0, 0,   0,     0,     0,     0,    95.2, 176.8] },
       { name: "Anomaly Detection",       labels: qLabels, values: [0, 0,   0,     0,     0,     0,     0,   117.6] },
     ];
     s.addChart(pres.charts.BAR, chartData, {
@@ -1619,11 +1631,11 @@ async function buildDeck() {
       fill: { color: NAVY }, line: { color: NAVY },
       rectRadius: 0.06
     });
-    s.addText("Q4 FY27", {
+    s.addText("Q1 FY28", {
       x: 7.0, y: 1.55, w: 2.85, h: 0.38,
       fontSize: 13, fontFace: FONT_H, bold: true, color: TECH, align: "center", margin: 0
     });
-    s.addText("$1.04M", {
+    s.addText("$1.25M", {
       x: 7.0, y: 1.96, w: 2.85, h: 0.62,
       fontSize: 32, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0
     });
@@ -1637,9 +1649,9 @@ async function buildDeck() {
 
     // Supporting stats
     const calloutStats = [
-      { val: "~81",    label: "active FI subscriptions" },
-      { val: "4.9%",   label: "of 1,660-FI base" },
-      { val: "3 apps", label: "driving first $1M" },
+      { val: "102",    label: "active FI subscriptions" },
+      { val: "6.1%",   label: "of 1,660-FI base" },
+      { val: "4 apps", label: "driving first $1M" },
     ];
     calloutStats.forEach((st, i) => {
       const sy = 3.06 + i * 0.72;
@@ -1654,7 +1666,7 @@ async function buildDeck() {
     });
 
     // Footer
-    s.addText("★ Q4 FY27 = Apr–Jun 2027  ·  ARR values are model projections; actual results depend on FI adoption and sales cycle timing", {
+    s.addText("★ Q1 FY28 = Jul–Sep 2027  ·  ARR values are model projections; Zelle Memo addressability based on 260 currently enabled FIs", {
       x: 0.35, y: 5.34, w: 9.4, h: 0.22,
       fontSize: 7.5, fontFace: FONT_B, color: MD_GRAY, margin: 0, italic: true
     });
@@ -1663,33 +1675,36 @@ async function buildDeck() {
     s.addNotes(`PATH TO $1M ARR — Presenter Talking Points
 
 OPENING FRAME (30 seconds):
-"This slide answers the question we always get from leadership: what's the return? The answer is $1M in ARR by Q4 FY27 — that's April through June of next year — driven by just three apps and less than five percent penetration of our existing FI base."
+"This slide answers the question we always get from leadership: what's the return? The answer is $1.25M in ARR by Q1 FY28 — that's July through September 2027 — driven by four apps and just 6% penetration of our existing FI base."
 
 THE MODEL STRUCTURE:
 • This is not a top-down market-sizing exercise. It's a bottoms-up, account-by-account model built on JH's actual 1,660 contracted FIs.
 • We segmented those FIs by asset tier and CU/bank split (44% CU / 56% bank). CUs get a 12% pricing accommodation for cooperative budget structures.
 • Each app has a blended average price — weighted across tiers — that we used to project ARR as FIs onboard quarterly.
 • We applied an 8% annual subscription churn rate (2% per quarter) to model attrition realistically.
+• Important Zelle Memo context: we currently have 260 Zelle-enabled FIs, not 580 (~35%). The model reflects reality — conservative Zelle Memo ramp of 5 FIs in launch quarter vs. the full JH Zelle addressable opportunity as PayCenter adoption grows.
 
 THE RAMP (walk the chart left to right):
-• Q3–Q4 FY26: Build quarters — no revenue. The team is building Churn Sentinel ACH pipeline.
-• Q1 FY27: Zelle Memo Intelligence launches. 12 FIs in first quarter → $116K ARR. Zelle-enabled FIs only (~580 addressable).
-• Q2 FY27: Churn Sentinel launches. 15 new FIs added. Total ARR crosses $400K.
-• Q3 FY27: CommercialSignal adds to the stack. Three apps running simultaneously → $762K.
-• Q4 FY27 ★: The milestone quarter. $1.04M ARR. Three apps, ~81 active subscribers.
-• Q1–Q2 FY28: Gen. Wealth Deflection and Anomaly Detection come online. Trajectory toward $1.7M.
+• Q3–Q4 FY26: Build quarters — no revenue. Team building Churn Sentinel ACH pipeline and Zelle Memo NLP infrastructure.
+• Q1 FY27: Zelle Memo Intelligence launches. 5 FIs in first quarter (conservative given 260 addressable today) → $48.5K ARR.
+• Q2 FY27: Churn Sentinel launches. 15 new FIs signed. Total ARR $293K.
+• Q3 FY27: CommercialSignal adds to the stack. Three apps → $621K.
+• Q4 FY27: $910K — approaching $1M but not quite there. This is actually a healthy position.
+• Q1 FY28 ★: The milestone quarter. $1.25M ARR. Four apps (Gen. Wealth joins), 102 active subscriptions.
+• Q2 FY28: $1.64M with Anomaly Detection coming online.
 
 WHAT MAKES THIS CREDIBLE:
-• 4.9% penetration of our own customer base is extremely achievable — we already have the relationships, the contracts, and the data pipelines. This is not cold outreach. These are existing JHBI clients we upsell.
-• Churn Sentinel has the broadest addressability (all 1,660 FIs), which is why it becomes the largest revenue line by Q2 FY28.
-• The model is conservative: no bundle pricing, no cross-sell acceleration, no partner channel.
+• 6.1% penetration of our own customer base is extremely conservative — we already have the relationships, the contracts, and the data pipelines. This is not cold outreach. These are existing JHBI clients we upsell.
+• Churn Sentinel has the broadest addressability (all 1,660 FIs) and becomes the dominant revenue line by Q2 FY28 ($753K of the total $1.64M).
+• The model uses correct 8% annual churn (2% per quarter) — earlier model drafts had a formula bug that overcalculated churn; this version is fixed.
+• As JH PayCenter adoption grows and more FIs enable Zelle, the Zelle Memo addressable base expands — creating natural upside not modeled here.
 
 KEY RISK AND MITIGATION:
-• Biggest risk is sales cycle length — community FIs can have 6-12 month procurement cycles. Mitigation: build the pilot program (3–5 anchor FIs) into the Phase 1 plan to generate reference customers quickly.
-• "What if we miss the 12-FI launch target for Zelle Memo?" — model holds above $700K in Q3 FY27 even if launch numbers are 30% lower.
+• Biggest risk is sales cycle length — community FIs can have 6-12 month procurement cycles. Mitigation: build the pilot program (3–5 anchor FIs) into Phase 1 to generate reference customers.
+• "What if Zelle Memo underperforms given only 260 FIs?" — Churn Sentinel and CommercialSignal are universal (all 1,660 FIs) and drive the bulk of revenue. Zelle Memo is additive, not foundational to the $1M path.
 
 CLOSE:
-"The Excel model behind this is available for review. Every assumption is documented, all formulas are live, and we built it so leadership can stress-test any variable — penetration rate, pricing, churn. The path to $1M is conservative and achievable within our existing FI base without adding a single new JH customer."`);
+"The Excel model behind this is available for review. Every assumption is documented, all formulas are live. The path to $1.25M ARR is achievable in Q1 FY28 within our existing FI base, starting with the 260 Zelle-enabled FIs we have today."`);
   }
 
   // ==========================================================
@@ -1735,7 +1750,7 @@ CLOSE:
     });
 
     const pricingRows = [
-      { app: "Zelle Memo Intelligence",  color: "085CE5", prices: ["$5,000", "$8,000", "$15,000", "$25,000"], launch: "Q1 FY27", note: "Zelle FIs only\n(~580 addressable)" },
+      { app: "Zelle Memo Intelligence",  color: "085CE5", prices: ["$5,000", "$8,000", "$15,000", "$25,000"], launch: "Q1 FY27", note: "Zelle FIs only\n(260 enabled today)" },
       { app: "Churn Sentinel",           color: "06185F", prices: ["$8,000", "$12,000", "$22,000", "$35,000"], launch: "Q2 FY27", note: "Universal · all FIs" },
       { app: "CommercialSignal",         color: "0A52C4", prices: ["$6,000", "$10,000", "$18,000", "$28,000"], launch: "Q3 FY27", note: "Universal · ACH data" },
       { app: "Gen. Wealth Deflection",   color: "0F3D8A", prices: ["$8,000", "$12,000", "$20,000", "$30,000"], launch: "Q1 FY28", note: "Requires core+\nhousehold data" },
@@ -2144,7 +2159,7 @@ REVENUE IMPLICATION:
   // ==========================================================
   // WRITE FILE
   // ==========================================================
-  const outPath = "/sessions/laughing-keen-fermat/mnt/outputs/JH_DS_Strategy_JHBI.pptx";
+  const outPath = "/sessions/laughing-keen-fermat/mnt/outputs/JHBI_DS_Revenue_Update.pptx";
   await pres.writeFile({ fileName: outPath });
   console.log(`✅ Written to: ${outPath}`);
 }

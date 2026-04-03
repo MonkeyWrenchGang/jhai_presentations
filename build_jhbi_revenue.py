@@ -99,7 +99,7 @@ params = [
     ("CU Share of Base",                0.44,  FMT_PCT,  True,  "Est. Symitar/CU share; internal estimate"),
     ("Bank Share of Base",              None,  FMT_PCT,  False, "Complement of CU share (formula-driven)"),
     ("CU Discount Rate",                0.12,  FMT_PCT,  True,  "Pricing accommodation for cooperative/NCUA budget cycles"),
-    ("Zelle Penetration (% of FIs)",    0.35,  FMT_PCT,  True,  "Est. ~35% of JH FIs have JHA PayCenter / Zelle enabled"),
+    ("Zelle Penetration (% of FIs)",    0.157, FMT_PCT,  True,  "260 of ~1,660 JH core FIs currently Zelle-enabled via JHA PayCenter"),
     ("Annual Subscription Churn Rate",  0.08,  FMT_PCT,  True,  "Annual FI churn on DS app subscriptions; adjust as needed"),
 ]
 for label, val, fmt, is_input, note in params:
@@ -153,9 +153,9 @@ for i,(label,total) in enumerate(tier_data):
     ws_a.row_dimensions[r].height = 18
     ws_a.cell(r,1).value = label;  ws_a.cell(r,1).font = fnt(); ws_a.cell(r,1).fill = fill(bg); ws_a.cell(r,1).border = bdr(); ws_a.cell(r,1).alignment = lft()
     ws_a.cell(r,2).value = total;  ws_a.cell(r,2).font = fnt(color=IN_BLUE, bold=True); ws_a.cell(r,2).number_format = FMT_INT; ws_a.cell(r,2).fill = fill(YELLOW); ws_a.cell(r,2).border = bdr(); ws_a.cell(r,2).alignment = ctr()
-    ws_a.cell(r,3).value = f"=ROUND(B{r}*$B$5,0)"; ws_a.cell(r,3).font = fnt(); ws_a.cell(r,3).number_format = FMT_INT; ws_a.cell(r,3).fill = fill(bg); ws_a.cell(r,3).border = bdr(); ws_a.cell(r,3).alignment = ctr()
+    ws_a.cell(r,3).value = f"=ROUND(B{r}*$B$6,0)"; ws_a.cell(r,3).font = fnt(); ws_a.cell(r,3).number_format = FMT_INT; ws_a.cell(r,3).fill = fill(bg); ws_a.cell(r,3).border = bdr(); ws_a.cell(r,3).alignment = ctr()
     ws_a.cell(r,4).value = f"=B{r}-C{r}";            ws_a.cell(r,4).font = fnt(); ws_a.cell(r,4).number_format = FMT_INT; ws_a.cell(r,4).fill = fill(bg); ws_a.cell(r,4).border = bdr(); ws_a.cell(r,4).alignment = ctr()
-    ws_a.cell(r,5).value = f"=ROUND(B{r}*$B$8,0)";  ws_a.cell(r,5).font = fnt(); ws_a.cell(r,5).number_format = FMT_INT; ws_a.cell(r,5).fill = fill(bg); ws_a.cell(r,5).border = bdr(); ws_a.cell(r,5).alignment = ctr()
+    ws_a.cell(r,5).value = f"=ROUND(B{r}*$B$9,0)";  ws_a.cell(r,5).font = fnt(); ws_a.cell(r,5).number_format = FMT_INT; ws_a.cell(r,5).fill = fill(bg); ws_a.cell(r,5).border = bdr(); ws_a.cell(r,5).alignment = ctr()
     r += 1
 
 # Totals
@@ -184,7 +184,7 @@ ws_a.row_dimensions[r].height = 18; r+=1
 
 pricing_start = r
 app_pricing = [
-    ("Zelle Memo Intelligence",  5000,  8000, 15000, 25000, "Zelle-enabled FIs only (~35% of base)"),
+    ("Zelle Memo Intelligence",  5000,  8000, 15000, 25000, "Zelle-enabled FIs only (260 currently; ~15.7% of base)"),
     ("Churn Sentinel",           8000, 12000, 22000, 35000, "Universal — all FI types, all tiers"),
     ("CommercialSignal",         6000, 10000, 18000, 28000, "Universal — runs on ACH/payments data"),
     ("Gen. Wealth Deflection",   8000, 12000, 20000, 30000, "Universal — requires core + household data (Phase 3)"),
@@ -354,7 +354,7 @@ for i,(q,cal) in enumerate(QUARTERS):
 apps_config = [
     # (name, blended_price_row_in_assumptions, launch_q, new_FIs_by_quarter, color)
     # new_FIs_by_quarter: list of 8 values (0 before launch)
-    ("Zelle Memo Intelligence",  blend_start+0, 2,  [0, 0, 12, 10, 10,  8,  7,  6], "085CE5"),
+    ("Zelle Memo Intelligence",  blend_start+0, 2,  [0, 0,  5,  4,  4,  4,  3,  3], "085CE5"),
     ("Churn Sentinel",           blend_start+1, 3,  [0, 0,  0, 15, 13, 12, 10,  8], "06185F"),
     ("CommercialSignal",         blend_start+2, 4,  [0, 0,  0,  0, 10,  9,  8,  7], "073FA8"),
     ("Gen. Wealth Deflection",   blend_start+3, 6,  [0, 0,  0,  0,  0,  0,  7,  6], "0D2E7A"),
@@ -411,7 +411,7 @@ for app_i, (app_name, price_row, launch_q, new_fi_sched, app_color) in enumerate
         else:
             prev_col = get_column_letter(DATA_COLS[i-1])
             cur_col  = get_column_letter(col)
-            c.value  = f"=ROUND({prev_col}{r}*(1-Assumptions!$B$9/4)+{cur_col}{new_fi_row},0)"
+            c.value  = f"=ROUND({prev_col}{r}*(1-Assumptions!$B$10/4)+{cur_col}{new_fi_row},0)"
         c.font   = fnt()
         c.fill   = fill(VLT_BLUE)
         c.border = bdr()
@@ -585,7 +585,7 @@ ws_s.row_dimensions[r].height = 18
 for ci in range(1, 9):
     c = ws_s.cell(r, ci)
     c.fill = fill(NAVY); c.border = bdr()
-ws_s.cell(r,1).value = "↑ $1M crossed Q4 FY27 (Apr–Jun 2027)"; ws_s.cell(r,1).font=fnt(bold=True,color=WHITE); ws_s.cell(r,1).alignment=lft()
+ws_s.cell(r,1).value = "↑ $1M crossed Q1 FY28 (Jul–Sep 2027)  |  Zelle base = 260 FIs (15.7% of 1,660)  |  8% annual churn corrected"; ws_s.cell(r,1).font=fnt(bold=True,color=WHITE); ws_s.cell(r,1).alignment=lft()
 ws_s.merge_cells(f"A{r}:H{r}")
 r += 2
 
