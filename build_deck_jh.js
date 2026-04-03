@@ -1756,6 +1756,283 @@ async function buildDeck() {
   }
 
   // ==========================================================
+  // SLIDE — PATH TO $1M ARR  (Revenue Ramp)
+  // ==========================================================
+  {
+    const s = pres.addSlide();
+    s.background = { color: WHITE };
+
+    // Top accent bar
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.08, fill: { color: COBALT }, line: { color: COBALT } });
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.15, h: 5.625, fill: { color: COBALT }, line: { color: COBALT } });
+
+    s.addText("REVENUE MODEL", {
+      x: 0.4, y: 0.18, w: 9, h: 0.28,
+      fontSize: 9, fontFace: FONT_H, bold: true, color: COBALT, charSpacing: 4, margin: 0
+    });
+    s.addText("Path to $1M ARR — DS App Add-On Revenue", {
+      x: 0.4, y: 0.52, w: 9, h: 0.5,
+      fontSize: 24, fontFace: FONT_H, bold: true, color: NAVY, margin: 0
+    });
+    s.addText("5 apps · Add-on to JHBI platform · ~1,660 addressable FIs · Blended bank/CU pricing", {
+      x: 0.4, y: 1.05, w: 9, h: 0.28,
+      fontSize: 11, fontFace: FONT_B, color: DK_GRAY, margin: 0
+    });
+
+    // ── Stacked bar chart ──
+    const qLabels = ["Q3 FY26", "Q4 FY26", "Q1 FY27", "Q2 FY27", "Q3 FY27", "Q4 FY27 ★", "Q1 FY28", "Q2 FY28"];
+    // Values in $K (divide by 1000, one decimal)
+    const chartData = [
+      { name: "Zelle Memo Intelligence", labels: qLabels, values: [0, 0, 116.4, 203.7, 281.3, 329.8, 368.6, 397.7] },
+      { name: "Churn Sentinel",          labels: qLabels, values: [0, 0,   0,   205.5, 369.9, 506.9, 602.8, 657.6] },
+      { name: "CommercialSignal",        labels: qLabels, values: [0, 0,   0,     0,   111.0, 199.8, 266.4, 321.9] },
+      { name: "Gen. Wealth Deflection",  labels: qLabels, values: [0, 0,   0,     0,     0,     0,    95.2, 163.2] },
+      { name: "Anomaly Detection",       labels: qLabels, values: [0, 0,   0,     0,     0,     0,     0,   117.6] },
+    ];
+    s.addChart(pres.charts.BAR, chartData, {
+      x: 0.35, y: 1.42, w: 6.6, h: 3.85,
+      barGrouping: "stacked",
+      barDir: "col",
+      chartColors: ["085CE5", "06185F", "0A52C4", "0F3D8A", "575A5D"],
+      showLegend: true, legendPos: "b", legendFontSize: 8, legendFontFace: FONT_B,
+      valAxisNumFmt: '"$"#,##0"K"',
+      catAxisLabelColor: "575A5D", catAxisLabelFontSize: 9,
+      valAxisLabelColor: "575A5D", valAxisLabelFontSize: 9,
+      valAxisMaxVal: 1800,
+      showValue: false,
+      plotAreaBorderColor: "E7ECF0",
+      serBorderSize: 0,
+    });
+
+    // ── $1M milestone line (drawn over chart area) ──
+    // Chart x=0.35, w=6.6 → right edge 6.95; $1M at 1000/$1800 ≈ 55.6% of chart height
+    // Chart y=1.42, h=3.85 (legend ~0.35 thick at bottom of chart box)
+    // Actual plot area ≈ y=1.42 to y=5.27-0.4(legend)=4.87; plot height ≈ 3.45
+    // $1M / $1800K = 55.6%; line y = 4.87 - 3.45*0.556 = 4.87 - 1.92 = 2.95
+    const milY = 2.90;
+    s.addShape(pres.shapes.LINE, {
+      x: 0.35, y: milY, w: 6.6, h: 0,
+      line: { color: "E53030", width: 1.5, dashType: "dash" }
+    });
+    s.addText("$1M ARR milestone", {
+      x: 6.98, y: milY - 0.14, w: 2.1, h: 0.28,
+      fontSize: 9, fontFace: FONT_B, bold: true, color: "E53030", margin: 0
+    });
+
+    // ── Milestone callout box ──
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+      x: 7.0, y: 1.42, w: 2.85, h: 3.85,
+      fill: { color: NAVY }, line: { color: NAVY },
+      rectRadius: 0.06
+    });
+    s.addText("Q4 FY27", {
+      x: 7.0, y: 1.55, w: 2.85, h: 0.38,
+      fontSize: 13, fontFace: FONT_H, bold: true, color: TECH, align: "center", margin: 0
+    });
+    s.addText("$1.04M", {
+      x: 7.0, y: 1.96, w: 2.85, h: 0.62,
+      fontSize: 32, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0
+    });
+    s.addText("ARR", {
+      x: 7.0, y: 2.56, w: 2.85, h: 0.28,
+      fontSize: 13, fontFace: FONT_H, bold: false, color: MD_GRAY, align: "center", margin: 0
+    });
+
+    // Divider
+    s.addShape(pres.shapes.RECTANGLE, { x: 7.22, y: 2.92, w: 2.42, h: 0.01, fill: { color: "0A52C4" }, line: { color: "0A52C4" } });
+
+    // Supporting stats
+    const calloutStats = [
+      { val: "~81",    label: "active FI subscriptions" },
+      { val: "4.9%",   label: "of 1,660-FI base" },
+      { val: "3 apps", label: "driving first $1M" },
+    ];
+    calloutStats.forEach((st, i) => {
+      const sy = 3.06 + i * 0.72;
+      s.addText(st.val, {
+        x: 7.0, y: sy, w: 2.85, h: 0.36,
+        fontSize: 18, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0
+      });
+      s.addText(st.label, {
+        x: 7.0, y: sy + 0.36, w: 2.85, h: 0.22,
+        fontSize: 9, fontFace: FONT_B, color: MD_GRAY, align: "center", margin: 0
+      });
+    });
+
+    // Footer
+    s.addText("★ Q4 FY27 = Apr–Jun 2027  ·  ARR values are model projections; actual results depend on FI adoption and sales cycle timing", {
+      x: 0.35, y: 5.34, w: 9.4, h: 0.22,
+      fontSize: 7.5, fontFace: FONT_B, color: MD_GRAY, margin: 0, italic: true
+    });
+
+    // ── Presenter Notes ──
+    s.addNotes(`PATH TO $1M ARR — Presenter Talking Points
+
+OPENING FRAME (30 seconds):
+"This slide answers the question we always get from leadership: what's the return? The answer is $1M in ARR by Q4 FY27 — that's April through June of next year — driven by just three apps and less than five percent penetration of our existing FI base."
+
+THE MODEL STRUCTURE:
+• This is not a top-down market-sizing exercise. It's a bottoms-up, account-by-account model built on JH's actual 1,660 contracted FIs.
+• We segmented those FIs by asset tier and CU/bank split (44% CU / 56% bank). CUs get a 12% pricing accommodation for cooperative budget structures.
+• Each app has a blended average price — weighted across tiers — that we used to project ARR as FIs onboard quarterly.
+• We applied an 8% annual subscription churn rate (2% per quarter) to model attrition realistically.
+
+THE RAMP (walk the chart left to right):
+• Q3–Q4 FY26: Build quarters — no revenue. The team is building Churn Sentinel ACH pipeline.
+• Q1 FY27: Zelle Memo Intelligence launches. 12 FIs in first quarter → $116K ARR. Zelle-enabled FIs only (~580 addressable).
+• Q2 FY27: Churn Sentinel launches. 15 new FIs added. Total ARR crosses $400K.
+• Q3 FY27: CommercialSignal adds to the stack. Three apps running simultaneously → $762K.
+• Q4 FY27 ★: The milestone quarter. $1.04M ARR. Three apps, ~81 active subscribers.
+• Q1–Q2 FY28: Gen. Wealth Deflection and Anomaly Detection come online. Trajectory toward $1.7M.
+
+WHAT MAKES THIS CREDIBLE:
+• 4.9% penetration of our own customer base is extremely achievable — we already have the relationships, the contracts, and the data pipelines. This is not cold outreach. These are existing JHBI clients we upsell.
+• Churn Sentinel has the broadest addressability (all 1,660 FIs), which is why it becomes the largest revenue line by Q2 FY28.
+• The model is conservative: no bundle pricing, no cross-sell acceleration, no partner channel.
+
+KEY RISK AND MITIGATION:
+• Biggest risk is sales cycle length — community FIs can have 6-12 month procurement cycles. Mitigation: build the pilot program (3–5 anchor FIs) into the Phase 1 plan to generate reference customers quickly.
+• "What if we miss the 12-FI launch target for Zelle Memo?" — model holds above $700K in Q3 FY27 even if launch numbers are 30% lower.
+
+CLOSE:
+"The Excel model behind this is available for review. Every assumption is documented, all formulas are live, and we built it so leadership can stress-test any variable — penetration rate, pricing, churn. The path to $1M is conservative and achievable within our existing FI base without adding a single new JH customer."`);
+  }
+
+  // ==========================================================
+  // SLIDE — DS APP PRICING SUMMARY  (Revenue Assumptions)
+  // ==========================================================
+  {
+    const s = pres.addSlide();
+    s.background = { color: WHITE };
+
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 10, h: 0.08, fill: { color: COBALT }, line: { color: COBALT } });
+    s.addShape(pres.shapes.RECTANGLE, { x: 0, y: 0, w: 0.15, h: 5.625, fill: { color: COBALT }, line: { color: COBALT } });
+
+    s.addText("REVENUE MODEL", {
+      x: 0.4, y: 0.18, w: 9, h: 0.28,
+      fontSize: 9, fontFace: FONT_H, bold: true, color: COBALT, charSpacing: 4, margin: 0
+    });
+    s.addText("DS App Pricing — Annual Add-On per FI", {
+      x: 0.4, y: 0.52, w: 8, h: 0.5,
+      fontSize: 24, fontFace: FONT_H, bold: true, color: NAVY, margin: 0
+    });
+    s.addText("Priced as annual subscriptions, add-on to JHBI platform fee  ·  CUs receive 12% pricing accommodation", {
+      x: 0.4, y: 1.05, w: 9, h: 0.28,
+      fontSize: 11, fontFace: FONT_B, color: DK_GRAY, margin: 0
+    });
+
+    // ── Pricing table ──
+    const colX   = [0.35, 2.40, 3.90, 5.38, 6.86, 8.15]; // app | <250M | 250M-1B | 1B-5B | 5B+ | notes
+    const colW   = [2.00, 1.45, 1.44, 1.44, 1.25, 1.65];
+    const headers = ["DS App", "<$250M", "$250M–$1B", "$1B–$5B", "$5B+", "Launch"];
+    const rowH   = 0.54;
+    const startY = 1.42;
+
+    // Header row
+    headers.forEach((h, ci) => {
+      s.addShape(pres.shapes.RECTANGLE, {
+        x: colX[ci], y: startY, w: colW[ci], h: 0.38,
+        fill: { color: NAVY }, line: { color: NAVY }
+      });
+      s.addText(h, {
+        x: colX[ci], y: startY, w: colW[ci], h: 0.38,
+        fontSize: 9.5, fontFace: FONT_H, bold: true, color: WHITE, align: "center", valign: "middle", margin: 0
+      });
+    });
+
+    const pricingRows = [
+      { app: "Zelle Memo Intelligence",  color: "085CE5", prices: ["$5,000", "$8,000", "$15,000", "$25,000"], launch: "Q1 FY27", note: "Zelle FIs only\n(~580 addressable)" },
+      { app: "Churn Sentinel",           color: "06185F", prices: ["$8,000", "$12,000", "$22,000", "$35,000"], launch: "Q2 FY27", note: "Universal · all FIs" },
+      { app: "CommercialSignal",         color: "0A52C4", prices: ["$6,000", "$10,000", "$18,000", "$28,000"], launch: "Q3 FY27", note: "Universal · ACH data" },
+      { app: "Gen. Wealth Deflection",   color: "0F3D8A", prices: ["$8,000", "$12,000", "$20,000", "$30,000"], launch: "Q1 FY28", note: "Requires core+\nhousehold data" },
+      { app: "Anomaly Detection",        color: "575A5D", prices: ["$9,000", "$14,000", "$24,000", "$40,000"], launch: "Q2 FY28", note: "Phase 3 · real-time\nfraud engine" },
+    ];
+
+    pricingRows.forEach((row, ri) => {
+      const y = startY + 0.38 + ri * rowH;
+      const bg = ri % 2 === 0 ? "F4F6FA" : "FFFFFF";
+
+      // App name cell with color accent
+      s.addShape(pres.shapes.RECTANGLE, { x: colX[0], y, w: 0.08, h: rowH, fill: { color: row.color }, line: { color: row.color } });
+      s.addShape(pres.shapes.RECTANGLE, { x: colX[0] + 0.08, y, w: colW[0] - 0.08, h: rowH, fill: { color: bg }, line: { color: "E7ECF0" } });
+      s.addText(row.app, {
+        x: colX[0] + 0.14, y, w: colW[0] - 0.14, h: rowH,
+        fontSize: 9.5, fontFace: FONT_H, bold: true, color: NAVY, valign: "middle", margin: [0, 0, 0, 4]
+      });
+
+      // Price cells
+      row.prices.forEach((p, ci) => {
+        s.addShape(pres.shapes.RECTANGLE, { x: colX[ci+1], y, w: colW[ci+1], h: rowH, fill: { color: bg }, line: { color: "E7ECF0" } });
+        s.addText(p, {
+          x: colX[ci+1], y, w: colW[ci+1], h: rowH,
+          fontSize: 10, fontFace: FONT_B, color: "085CE5", align: "center", valign: "middle", bold: true, margin: 0
+        });
+      });
+
+      // Launch + notes cell
+      s.addShape(pres.shapes.RECTANGLE, { x: colX[5], y, w: colW[5], h: rowH, fill: { color: bg }, line: { color: "E7ECF0" } });
+      s.addText(row.launch, {
+        x: colX[5], y: y + 0.04, w: colW[5], h: 0.24,
+        fontSize: 9.5, fontFace: FONT_H, bold: true, color: NAVY, align: "center", margin: 0
+      });
+      s.addText(row.note, {
+        x: colX[5], y: y + 0.27, w: colW[5], h: 0.24,
+        fontSize: 7.5, fontFace: FONT_B, color: DK_GRAY, align: "center", margin: 0
+      });
+    });
+
+    // ── Key assumptions box (right side) ──
+    // Blended avg prices box
+    const bmX = 0.35, bmY = startY + 0.38 + 5 * rowH + 0.18;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+      x: bmX, y: bmY, w: 9.5, h: 0.72,
+      fill: { color: "E8F0FD" }, line: { color: "BCD0F5" },
+      rectRadius: 0.05
+    });
+    s.addText("KEY ASSUMPTIONS", {
+      x: bmX + 0.14, y: bmY + 0.06, w: 1.6, h: 0.22,
+      fontSize: 8, fontFace: FONT_H, bold: true, color: COBALT, margin: 0, charSpacing: 1
+    });
+    const assumptions = [
+      "Blended avg price (bank/CU mix):  Zelle $9.7K  ·  Churn $13.7K  ·  CommercialSignal $11.1K  ·  Gen. Wealth $13.6K  ·  Anomaly $16.8K",
+      "44% CU / 56% bank mix  ·  12% CU discount applied  ·  8% annual subscription churn  ·  No bundle pricing (future option)",
+    ];
+    assumptions.forEach((a, i) => {
+      s.addText(a, {
+        x: bmX + 0.14, y: bmY + 0.26 + i * 0.19, w: 9.2, h: 0.19,
+        fontSize: 8.5, fontFace: FONT_B, color: "334466", margin: 0
+      });
+    });
+
+    s.addNotes(`DS APP PRICING — Presenter Talking Points
+
+FRAMING (15 seconds):
+"These are annual add-on subscriptions priced on top of the JHBI platform fee. We're not replacing JHBI revenue — we're extending it. Every existing JHBI client is a potential buyer. No new sales motion required, just a product upsell."
+
+THE PRICING RATIONALE:
+• Pricing scales with institution size — smaller FIs (<$250M) pay entry-level rates; larger FIs ($5B+) pay rates commensurate with the value at scale (a 5B+ bank protecting even 0.5% churn = multi-million dollar impact).
+• The blended average prices used in the revenue model account for our 44/56 CU/bank mix and the 12% cooperative discount for CUs.
+• Why a 12% CU discount? Credit unions run on NCUA-regulated capital ratios and cooperative surplus rules — budget flexibility is genuinely lower. A modest discount maintains the relationship without giving away margin; we're still above SAAS rule-of-thumb economics.
+
+TIER POSITIONING:
+• <$250M tier: Entry point. $5–9K is a rounding error relative to the potential churn or fraud loss at this asset size. Easy approval cycle.
+• $250M–$1B tier: Core community bank/CU market — most of our base sits here. $8–14K annually is a 1–2 month subscriptions to a junior analyst. Model ROI is obvious.
+• $1B–$5B: Larger regional. $15–24K. These FIs often have internal analytics teams; our angle is "complement your team with JH network intelligence you can't build yourself."
+• $5B+: Strategic accounts. $25–40K. Require more complex sales cycle but anchor client wins drive brand credibility. Prioritize 1–2 pilot partners here early.
+
+LAUNCH SEQUENCING (connect back to the roadmap):
+• Zelle Memo launches first (Q1 FY27) because the payments pipeline is being built anyway — it's the lowest incremental lift.
+• Churn Sentinel follows in Q2 FY27 and has the broadest addressability — all 1,660 FIs, no Zelle dependency.
+• CommercialSignal Q3 FY27, Gen. Wealth and Anomaly Detection in FY28 as the model suite matures.
+
+ON BUNDLING:
+"We're not offering bundles at launch — we want clean per-app economics to understand what the market actually values. Once we have 4–5 apps live and 50+ FI subscribers, bundling becomes a natural conversation to drive expansion revenue. That option is built into the model as a future lever."
+
+ANTICIPATED QUESTION: "Why not price per-account or per-user?"
+Answer: Per-FI annual subscription is the dominant SaaS model in fintech B2B. It's predictable, easy for FI budget owners to approve (single line item), and doesn't require us to instrument usage metering in Year 1. We can layer consumption pricing in Year 2 once instrumentation is in place.`);
+  }
+
+  // ==========================================================
   // SLIDE 15 — NEXT STEPS (dark closing)
   // ==========================================================
   {
