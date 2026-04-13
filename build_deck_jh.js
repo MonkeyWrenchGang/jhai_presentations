@@ -1586,36 +1586,38 @@ async function buildDeck() {
     });
 
     // ── Stacked bar chart ──
-    const qLabels = ["Q3 FY26", "Q4 FY26", "Q1 FY27", "Q2 FY27", "Q3 FY27", "Q4 FY27", "Q1 FY28 ★", "Q2 FY28"];
-    // Values in $K — corrected for 260 Zelle-enabled FIs and 8% annual churn (2%/quarter)
+    const qLabels = ["Q3 FY26", "Q4 FY26", "Q1 FY27", "Q2 FY27", "Q3 FY27", "Q4 FY27 ★", "Q1 FY28", "Q2 FY28"];
+    // Values in $K ARR (Annual Run Rate).  DS Apps: 260 Zelle FIs, 8% annual churn.
+    // Platform Migration: 150 JHAKnow banks + 150 ARCU CUs → JHBI; 10% uplift placeholder ($1K/bank, $880/CU).
     const chartData = [
-      { name: "Zelle Memo Intelligence", labels: qLabels, values: [0, 0,  48.5,  87.3, 126.1, 164.9, 194.0, 223.1] },
-      { name: "Churn Sentinel",          labels: qLabels, values: [0, 0,   0,   205.5, 383.6, 534.3, 657.6, 753.5] },
-      { name: "CommercialSignal",        labels: qLabels, values: [0, 0,   0,     0,   111.0, 210.9, 299.7, 366.3] },
-      { name: "Gen. Wealth Deflection",  labels: qLabels, values: [0, 0,   0,     0,     0,     0,    95.2, 176.8] },
-      { name: "Anomaly Detection",       labels: qLabels, values: [0, 0,   0,     0,     0,     0,     0,   117.6] },
+      { name: "Zelle Memo Intelligence",        labels: qLabels, values: [0, 0,  48.5,  87.3, 126.1, 164.9, 194.0, 223.1] },
+      { name: "Churn Sentinel",                 labels: qLabels, values: [0, 0,   0,   205.5, 383.6, 534.3, 657.6, 753.5] },
+      { name: "CommercialSignal",               labels: qLabels, values: [0, 0,   0,     0,   111.0, 210.9, 299.7, 366.3] },
+      { name: "Gen. Wealth Deflection",         labels: qLabels, values: [0, 0,   0,     0,     0,     0,    95.2, 176.8] },
+      { name: "Anomaly Detection",              labels: qLabels, values: [0, 0,   0,     0,     0,     0,     0,   117.6] },
+      { name: "Platform Migration Uplift\n(JHAKnow+ARCU→JHBI)", labels: qLabels, values: [0, 0,  37.6, 141.0, 225.6, 282.0, 282.0, 282.0] },
     ];
     s.addChart(pres.charts.BAR, chartData, {
       x: 0.35, y: 1.42, w: 6.6, h: 3.85,
       barGrouping: "stacked",
       barDir: "col",
-      chartColors: ["085CE5", "06185F", "0A52C4", "0F3D8A", "575A5D"],
+      chartColors: ["085CE5", "06185F", "0A52C4", "0F3D8A", "575A5D", "1B7FA7"],
       showLegend: true, legendPos: "b", legendFontSize: 8, legendFontFace: FONT_B,
       valAxisNumFmt: '"$"#,##0"K"',
       catAxisLabelColor: "575A5D", catAxisLabelFontSize: 9,
       valAxisLabelColor: "575A5D", valAxisLabelFontSize: 9,
-      valAxisMaxVal: 1800,
+      valAxisMaxVal: 2200,
       showValue: false,
       plotAreaBorderColor: "E7ECF0",
       serBorderSize: 0,
     });
 
     // ── $1M milestone line (drawn over chart area) ──
-    // Chart x=0.35, w=6.6 → right edge 6.95; $1M at 1000/$1800 ≈ 55.6% of chart height
+    // Chart x=0.35, w=6.6 → right edge 6.95; $1M at 1000/$2200 ≈ 45.5% of chart height
     // Chart y=1.42, h=3.85 (legend ~0.35 thick at bottom of chart box)
     // Actual plot area ≈ y=1.42 to y=5.27-0.4(legend)=4.87; plot height ≈ 3.45
-    // $1M / $1800K = 55.6%; line y = 4.87 - 3.45*0.556 = 4.87 - 1.92 = 2.95
-    const milY = 2.90;
+    // $1M / $2200K = 45.5%; line y = 4.87 - 3.45*0.455 = 4.87 - 1.57 = 3.30
+    const milY = 3.28;
     s.addShape(pres.shapes.LINE, {
       x: 0.35, y: milY, w: 6.6, h: 0,
       line: { color: "E53030", width: 1.5, dashType: "dash" }
@@ -1631,11 +1633,11 @@ async function buildDeck() {
       fill: { color: NAVY }, line: { color: NAVY },
       rectRadius: 0.06
     });
-    s.addText("Q1 FY28", {
+    s.addText("Q4 FY27 ★", {
       x: 7.0, y: 1.55, w: 2.85, h: 0.38,
       fontSize: 13, fontFace: FONT_H, bold: true, color: TECH, align: "center", margin: 0
     });
-    s.addText("$1.25M", {
+    s.addText("$1.19M", {
       x: 7.0, y: 1.96, w: 2.85, h: 0.62,
       fontSize: 32, fontFace: FONT_H, bold: true, color: WHITE, align: "center", margin: 0
     });
@@ -1649,9 +1651,9 @@ async function buildDeck() {
 
     // Supporting stats
     const calloutStats = [
-      { val: "102",    label: "active FI subscriptions" },
-      { val: "6.1%",   label: "of 1,660-FI base" },
-      { val: "4 apps", label: "driving first $1M" },
+      { val: "~75",    label: "DS app subscriptions" },
+      { val: "300",    label: "platform migration FIs" },
+      { val: "3+mig.", label: "revenue streams" },
     ];
     calloutStats.forEach((st, i) => {
       const sy = 3.06 + i * 0.72;
@@ -1666,7 +1668,7 @@ async function buildDeck() {
     });
 
     // Footer
-    s.addText("★ Q1 FY28 = Jul–Sep 2027  ·  ARR values are model projections; Zelle Memo addressability based on 260 currently enabled FIs", {
+    s.addText("★ Q4 FY27 = Apr–Jun 2027  ·  Combined: DS Apps ($910K) + Platform Migration ($282K)  ·  Migration: 10% uplift on 150 JHAKnow banks + 150 ARCU CUs → JHBI (placeholder)  ·  DS Apps alone hit $1M in Q1 FY28", {
       x: 0.35, y: 5.34, w: 9.4, h: 0.22,
       fontSize: 7.5, fontFace: FONT_B, color: MD_GRAY, margin: 0, italic: true
     });
@@ -1675,23 +1677,28 @@ async function buildDeck() {
     s.addNotes(`PATH TO $1M ARR — Presenter Talking Points
 
 OPENING FRAME (30 seconds):
-"This slide answers the question we always get from leadership: what's the return? The answer is $1.25M in ARR by Q1 FY28 — that's July through September 2027 — driven by four apps and just 6% penetration of our existing FI base."
+"This chart tells two revenue stories at once. The colored bars are net-new AI app subscriptions — our DS product portfolio. The teal layer at the top is something different: it's the revenue we capture as our existing JHAKnow and ARCU customers migrate to the unified JHBI platform. Together they cross $1M in Q4 FY27 — one quarter earlier than the apps alone."
 
-THE MODEL STRUCTURE:
-• This is not a top-down market-sizing exercise. It's a bottoms-up, account-by-account model built on JH's actual 1,660 contracted FIs.
-• We segmented those FIs by asset tier and CU/bank split (44% CU / 56% bank). CUs get a 12% pricing accommodation for cooperative budget structures.
-• Each app has a blended average price — weighted across tiers — that we used to project ARR as FIs onboard quarterly.
-• We applied an 8% annual subscription churn rate (2% per quarter) to model attrition realistically.
-• Important Zelle Memo context: we currently have 260 Zelle-enabled FIs, not 580 (~35%). The model reflects reality — conservative Zelle Memo ramp of 5 FIs in launch quarter vs. the full JH Zelle addressable opportunity as PayCenter adoption grows.
+TWO REVENUE STREAMS:
+1. DS App Subscriptions (5 AI apps) — net-new revenue from JHBI AI product portfolio
+   • Bottoms-up model: 1,660 contracted JH FIs × tier-weighted blended prices × quarterly signing schedule
+   • 8% annual churn, 44% CU share (12% discount), 260 Zelle-enabled FIs for Zelle Memo
+   • Apps alone hit $1M in Q1 FY28 ($1.25M)
+
+2. Platform Migration Uplift (teal) — incremental revenue as JHAKnow/ARCU customers move to JHBI
+   • 150 JHAKnow banks + 150 ARCU CUs = 300 FIs currently on legacy analytics platforms
+   • JHBI replaces/upgrades these products with a nominal uplift (10% placeholder — not finalized)
+   • Full migration assumed by Q4 FY27: ~$282K annual run rate from this stream alone
+   • NOTE: 10% uplift is a modeling assumption only. Final pricing TBD.
 
 THE RAMP (walk the chart left to right):
-• Q3–Q4 FY26: Build quarters — no revenue. Team building Churn Sentinel ACH pipeline and Zelle Memo NLP infrastructure.
-• Q1 FY27: Zelle Memo Intelligence launches. 5 FIs in first quarter (conservative given 260 addressable today) → $48.5K ARR.
-• Q2 FY27: Churn Sentinel launches. 15 new FIs signed. Total ARR $293K.
-• Q3 FY27: CommercialSignal adds to the stack. Three apps → $621K.
-• Q4 FY27: $910K — approaching $1M but not quite there. This is actually a healthy position.
-• Q1 FY28 ★: The milestone quarter. $1.25M ARR. Four apps (Gen. Wealth joins), 102 active subscriptions.
-• Q2 FY28: $1.64M with Anomaly Detection coming online.
+• Q3–Q4 FY26: Build quarters — no revenue. Team stands up Churn Sentinel ACH pipeline and Zelle NLP infrastructure.
+• Q1 FY27: Zelle Memo Intelligence launches (5 FIs). Migration begins for pilot cohort (~40 FIs). Combined: $86K ARR.
+• Q2 FY27: Churn Sentinel launches. Migration Wave 1 (~150 FIs). Combined: $434K ARR.
+• Q3 FY27: CommercialSignal adds. Migration Wave 2 (~240 FIs). Combined: $847K ARR.
+• Q4 FY27 ★: MILESTONE — $1.19M combined. DS Apps ($910K) + full platform migration ($282K). 300 legacy FIs fully on JHBI.
+• Q1 FY28: DS Apps alone at $1.25M. Gen. Wealth Deflection joins. Combined: $1.53M ARR.
+• Q2 FY28: $1.92M combined with Anomaly Detection online. ~$7.7M annualized run rate.
 
 WHAT MAKES THIS CREDIBLE:
 • 6.1% penetration of our own customer base is extremely conservative — we already have the relationships, the contracts, and the data pipelines. This is not cold outreach. These are existing JHBI clients we upsell.
