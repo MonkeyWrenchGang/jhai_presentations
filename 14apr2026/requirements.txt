@@ -1,0 +1,29 @@
+# Banking Churn Demo — Python dependencies
+# Install with: source .venv/bin/activate && pip install -r requirements.txt
+
+# Core ML
+catboost>=1.2
+xgboost>=2.0
+scikit-learn>=1.4
+torch>=2.1
+
+# Explainability
+shap>=0.44
+
+# Data
+pandas>=2.1
+numpy>=1.26
+pyarrow>=14.0
+faker>=24.0
+
+# Visualisation
+matplotlib>=3.8
+seaborn>=0.13
+
+# Notebook
+jupyter>=1.0
+ipykernel>=6.0
+nbformat>=5.9
+
+# Utilities
+tqdm>=4.66
